@@ -1,0 +1,8 @@
+{
+  "name": "credit-management-root",
+  "private": true,
+  "scripts": {
+    "dev": "cd credit-app && pnpm run dev",
+    "mobile": "cd CustomerCreditSystem && npm start"
+  }
+}
