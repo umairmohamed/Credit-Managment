@@ -5,38 +5,213 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+  margin: 0;
+  display: flex;
+  place-items: flex-start center;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.login-container, .dashboard-container, .add-customer-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.card {
-  padding: 2em;
+.login-input, .form-input, .modal-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
-.read-the-docs {
-  color: #888;
+.login-btn, .save-btn, .confirm-btn {
+  padding: 10px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.toggle-btn, .cancel-btn, .logout-btn {
+  background: none;
+  border: none;
+  color: #007AFF;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.logout-btn {
+    color: #555;
+    background-color: #ddd;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.cancel-btn {
+    color: #d32f2f;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2196F3;
+  padding: 15px;
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.total-credit-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.total-label {
+    font-size: 14px;
+}
+
+.total-amount {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.customer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.customer-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.customer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.customer-name {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.customer-mobile {
+  color: #666;
+  font-size: 14px;
+}
+
+.customer-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.customer-credit {
+  color: #d32f2f;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.pay-btn {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fab-container {
+  margin-top: 20px;
+}
+
+.fab-btn {
+    padding: 15px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
