@@ -1,81 +1,166 @@
+:root {
+  --primary-color: #4F46E5;
+  --primary-hover: #4338ca;
+  --bg-color: #F3F4F6;
+  --card-bg: #FFFFFF;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --danger-color: #EF4444;
+  --success-color: #10B981;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --radius-lg: 12px;
+  --radius-md: 8px;
+}
+
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: flex-start center;
-  min-width: 320px;
+  display: block;
   min-height: 100vh;
-  background-color: #f5f5f5;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text-primary);
 }
 
+/* Layout Containers */
 .login-container, .dashboard-container, .add-customer-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 500px;
+  margin: 40px auto;
+  background-color: var(--card-bg);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease;
 }
 
-.login-form {
+h2 {
+  color: var(--primary-color);
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+/* Forms */
+.login-form, .form-group {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
 }
 
 .login-input, .form-input, .modal-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 12px 16px;
+  border: 1px solid #E5E7EB;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #F9FAFB;
+}
+
+.login-input:focus, .form-input:focus, .modal-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  background-color: #fff;
+}
+
+/* Buttons */
+button {
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  transition: all 0.2s;
 }
 
 .login-btn, .save-btn, .confirm-btn {
-  padding: 10px;
-  background-color: #2196F3;
+  padding: 12px;
+  background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
+  margin-top: 8px;
+  box-shadow: var(--shadow-sm);
 }
 
-.toggle-btn, .cancel-btn, .logout-btn {
+.login-btn:hover, .save-btn:hover, .confirm-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.toggle-btn {
   background: none;
   border: none;
-  color: #007AFF;
+  color: var(--primary-color);
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 16px;
+  font-size: 0.9rem;
+}
+
+.toggle-btn:hover {
+  text-decoration: underline;
 }
 
 .logout-btn {
-    color: #555;
-    background-color: #ddd;
-    padding: 5px 10px;
-    border-radius: 4px;
+  color: var(--text-secondary);
+  background-color: #E5E7EB;
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #D1D5DB;
+  color: var(--text-primary);
 }
 
 .cancel-btn {
-    color: #d32f2f;
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid #D1D5DB;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
 }
 
+.cancel-btn:hover {
+  background-color: #F3F4F6;
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+/* Dashboard Header */
 .dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #2196F3;
-  padding: 15px;
-  border-radius: 8px;
+  background: linear-gradient(135deg, var(--primary-color), #6366F1);
+  padding: 24px;
+  border-radius: var(--radius-lg);
   color: white;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-md);
 }
 
 .total-credit-section {
@@ -85,18 +170,23 @@ body {
 }
 
 .total-label {
-    font-size: 14px;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .total-amount {
-    font-size: 24px;
-    font-weight: bold;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 4px;
 }
 
+/* Customer List */
 .customer-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .customer-card {
@@ -104,75 +194,102 @@ body {
   justify-content: space-between;
   align-items: center;
   background-color: white;
-  padding: 15px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #F3F4F6;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.customer-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .customer-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .customer-name {
-  font-weight: bold;
-  font-size: 18px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-primary);
 }
 
 .customer-mobile {
-  color: #666;
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 4px;
 }
 
 .customer-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .customer-credit {
-  color: #d32f2f;
-  font-weight: bold;
-  margin-bottom: 5px;
+  color: var(--danger-color);
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 1rem;
 }
 
 .pay-btn {
-  padding: 5px 10px;
-  background-color: #4CAF50;
+  padding: 6px 14px;
+  background-color: var(--success-color);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 20px; /* Pill shape */
   cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
+.pay-btn:hover {
+  background-color: #059669;
+  transform: scale(1.05);
+}
+
+/* FAB */
 .fab-container {
-  margin-top: 20px;
+  margin-top: 32px;
 }
 
 .fab-btn {
-    padding: 15px;
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
+  padding: 16px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
+  transition: transform 0.2s;
 }
 
+.fab-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  background-color: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
 }
 
 .modal-content {
@@ -184,34 +301,24 @@ body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 .modal-actions {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 15px;
-    width: 100%;
-}
-
-.form-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-.form-input {
-    width: 100%;
-    box-sizing: border-box;
+  margin-top: 20px;
 }
 
 .form-actions {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.form-actions button {
+  flex: 1;
 }
