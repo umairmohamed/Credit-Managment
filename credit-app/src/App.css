@@ -2,9 +2,9 @@
   --primary-color: #4F46E5;
   --primary-hover: #4338ca;
   --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --glass-bg: rgba(255, 255, 255, 0.25);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.18);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --glass-bg: rgba(255, 255, 255, 0.15); /* More transparent */
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   --text-primary: #1F2937;
   --text-secondary: #4B5563;
   --danger-color: #EF4444;
@@ -25,18 +25,24 @@ body {
   margin: 0;
   display: block;
   min-height: 100vh;
+  /* Fallback */
   background: var(--bg-gradient);
+  /* Image Background */
+  background-image: url('./assets/login-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text-primary);
-  overflow: hidden; /* Hide body scroll, use main-content scroll */
+  overflow: hidden;
 }
 
 /* Glassmorphism Utilities */
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px); /* Increased blur */
+  -webkit-backdrop-filter: blur(16px);
   border-radius: var(--radius-lg);
   border: var(--glass-border);
   box-shadow: var(--glass-shadow);
@@ -49,7 +55,7 @@ body {
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.6); /* Slightly more opaque for better readability */
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(4px);
   border: var(--glass-border);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -62,12 +68,38 @@ body {
 }
 
 /* Layout Containers */
-.login-container, .add-customer-container {
+.login-container {
+  width: 90%;
+  max-width: 420px; /* Narrower for login */
+  margin: 80px auto;
+  padding: 40px;
+  color: #fff; /* White text for login on dark bg */
+  background: rgba(0, 0, 0, 0.4); /* Darker glass for better contrast */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.add-customer-container {
   width: 90%;
   max-width: 600px;
   margin: 40px auto;
   padding: 32px;
   color: #1f2937;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* New Sidebar Layout */
@@ -196,10 +228,10 @@ body {
 
 /* Form Styles */
 h2 {
-  color: #111;
+  color: inherit; /* Inherit color (white in login, dark elsewhere) */
   margin-bottom: 24px;
   font-weight: 700;
-  text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .form-group {
@@ -213,19 +245,59 @@ h2 {
 .form-group label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #374151;
+  color: inherit;
 }
 
-.login-input, .form-input, .modal-input {
+.login-input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.login-input-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #4F46E5;
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+}
+
+.login-input {
+  width: 100%;
+  padding: 14px 16px 14px 44px; /* Space for icon */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px; /* Rounded pill shape */
+  font-size: 1rem;
+  transition: all 0.3s;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.login-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: #a78bfa;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.2);
+}
+
+.form-input, .modal-input {
   padding: 12px 16px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: var(--radius-md);
   font-size: 1rem;
   transition: all 0.2s;
   background-color: rgba(255, 255, 255, 0.6);
+  color: #1f2937;
 }
 
-.login-input:focus, .form-input:focus, .modal-input:focus {
+.form-input:focus, .modal-input:focus {
   outline: none;
   border-color: var(--primary-color);
   background-color: rgba(255, 255, 255, 0.9);
@@ -236,9 +308,49 @@ button {
   font-weight: 600;
   letter-spacing: 0.025em;
   transition: all 0.2s;
+  font-family: inherit;
 }
 
-.login-btn, .save-btn, .confirm-btn {
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-top: 12px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+}
+
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.8);
+  margin-top: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.toggle-btn:hover {
+  color: #fff;
+}
+
+.save-btn, .confirm-btn {
   padding: 12px;
   background-color: var(--primary-color);
   color: white;
@@ -250,7 +362,7 @@ button {
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.login-btn:hover, .save-btn:hover, .confirm-btn:hover {
+.save-btn:hover, .confirm-btn:hover {
   filter: brightness(1.1);
   transform: translateY(-1px);
 }
@@ -505,7 +617,7 @@ button {
     }
 
     .sidebar-footer {
-        display: none; /* Hide footer logout on mobile, put it elsewhere or keep simple */
+        display: none;
     }
 
     .main-content {

@@ -32,24 +32,42 @@ const LoginScreen: React.FC = () => {
 
   return (
     <div className="login-container">
-      <h2>{isRegistering ? 'Register' : 'Admin Login'}</h2>
+      <div style={{ marginBottom: '30px' }}>
+        <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>{isRegistering ? 'Create Account' : 'Welcome Back'}</h2>
+        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem' }}>
+          {isRegistering ? 'Sign up to get started' : 'Enter your credentials to access your account'}
+        </p>
+      </div>
+
       <form onSubmit={handleSubmit} className="login-form">
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="login-input"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="login-input"
-        />
+        <div className="login-input-group">
+          <svg className="login-input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="login-input"
+          />
+        </div>
+
+        <div className="login-input-group">
+          <svg className="login-input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="login-input"
+          />
+        </div>
+
         <button type="submit" className="login-btn">
-          {isRegistering ? 'Register' : 'Login'}
+          {isRegistering ? 'Sign Up' : 'Sign In'}
         </button>
       </form>
 
