@@ -17,6 +17,7 @@ export interface Supplier {
 export interface Investment {
   id: string;
   name: string;
+  mobile: string;
   amount: number;
   type: 'given' | 'taken';
   date: string;
@@ -38,7 +39,7 @@ interface AppContextType {
   addPayment: (customerId: string, amount: string | number) => void;
   addDebt: (customerId: string, amount: string | number) => void;
   addSupplier: (name: string, mobile: string) => Supplier;
-  addInvestment: (name: string, amount: string | number, type: 'given' | 'taken') => Investment;
+  addInvestment: (name: string, mobile: string, amount: string | number, type: 'given' | 'taken') => Investment;
   totalCredit: number;
 }
 
@@ -124,13 +125,14 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return newSupplier;
   };
 
-  const addInvestment = (name: string, amount: string | number, type: 'given' | 'taken') => {
+  const addInvestment = (name: string, mobile: string, amount: string | number, type: 'given' | 'taken') => {
     const numAmount = parseFloat(amount.toString());
     if (isNaN(numAmount) || numAmount <= 0) throw new Error('Invalid amount');
 
     const newInvestment: Investment = {
       id: Date.now().toString() + Math.random().toString(),
       name,
+      mobile,
       amount: numAmount,
       type,
       date: new Date().toISOString(),
