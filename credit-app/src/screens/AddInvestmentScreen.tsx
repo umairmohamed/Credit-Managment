@@ -8,6 +8,7 @@ interface AddInvestmentScreenProps {
 const AddInvestmentScreen: React.FC<AddInvestmentScreenProps> = ({ onGoBack }) => {
   const { addInvestment } = useApp();
   const [name, setName] = useState('');
+  const [mobile, setMobile] = useState('');
   const [amount, setAmount] = useState('');
   const [type, setType] = useState<'given' | 'taken'>('given');
 
@@ -17,7 +18,7 @@ const AddInvestmentScreen: React.FC<AddInvestmentScreenProps> = ({ onGoBack }) =
       return;
     }
     try {
-      addInvestment(name, amount, type);
+      addInvestment(name, mobile, amount, type);
       onGoBack();
     } catch (error: any) {
       alert('Error: ' + error.message);
@@ -34,6 +35,16 @@ const AddInvestmentScreen: React.FC<AddInvestmentScreenProps> = ({ onGoBack }) =
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Enter Investment Name"
+          className="form-input"
+        />
+      </div>
+      <div className="form-group">
+        <label>Contact Number</label>
+        <input
+          type="tel"
+          value={mobile}
+          onChange={(e) => setMobile(e.target.value)}
+          placeholder="Enter Contact Number (Optional)"
           className="form-input"
         />
       </div>
