@@ -7,6 +7,21 @@ export interface Customer {
   credit: number;
 }
 
+export interface Supplier {
+  id: string;
+  name: string;
+  mobile: string;
+  credit: number;
+}
+
+export interface Investment {
+  id: string;
+  name: string;
+  amount: number;
+  type: 'given' | 'taken';
+  date: string;
+}
+
 export interface User {
   username: string;
 }
@@ -14,12 +29,16 @@ export interface User {
 interface AppContextType {
   user: User | null;
   customers: Customer[];
+  suppliers: Supplier[];
+  investments: Investment[];
   login: (username: string, password: string) => boolean;
   register: (username: string, password: string) => boolean;
   logout: () => void;
   addCustomer: (name: string, mobile: string) => Customer;
   addPayment: (customerId: string, amount: string | number) => void;
   addDebt: (customerId: string, amount: string | number) => void;
+  addSupplier: (name: string, mobile: string) => Supplier;
+  addInvestment: (name: string, amount: string | number, type: 'given' | 'taken') => Investment;
   totalCredit: number;
 }
 
@@ -28,6 +47,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [customers, setCustomers] = useState<Customer[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [investments, setInvestments] = useState<Investment[]>([]);
   const [registeredUsers, setRegisteredUsers] = useState([{username: 'admin', password: 'admin'}]);
 
   const register = (username: string, password: string) => {
@@ -89,12 +110,43 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }));
   };
 
+  const addSupplier = (name: string, mobile: string) => {
+    if (!/^\d{9}$/.test(mobile)) {
+      throw new Error('Mobile number must be exactly 9 digits.');
+    }
+    const newSupplier: Supplier = {
+      id: Date.now().toString() + Math.random().toString(),
+      name,
+      mobile,
+      credit: 0,
+    };
+    setSuppliers((prev) => [...prev, newSupplier]);
+    return newSupplier;
+  };
+
+  const addInvestment = (name: string, amount: string | number, type: 'given' | 'taken') => {
+    const numAmount = parseFloat(amount.toString());
+    if (isNaN(numAmount) || numAmount <= 0) throw new Error('Invalid amount');
+
+    const newInvestment: Investment = {
+      id: Date.now().toString() + Math.random().toString(),
+      name,
+      amount: numAmount,
+      type,
+      date: new Date().toISOString(),
+    };
+    setInvestments((prev) => [...prev, newInvestment]);
+    return newInvestment;
+  };
+
   const totalCredit = customers.reduce((sum, c) => sum + c.credit, 0);
 
   return (
     <AppContext.Provider value={{
       user, login, register, logout,
-      customers, addCustomer, addPayment, addDebt,
+      customers, suppliers, investments,
+      addCustomer, addPayment, addDebt,
+      addSupplier, addInvestment,
       totalCredit
     }}>
       {children}
