@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useApp, type Customer, type Supplier, type Investment } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 import InvoiceModal from '../components/InvoiceModal';
+import OverviewCharts from '../components/OverviewCharts';
 
-export type TabType = 'customers' | 'suppliers' | 'investments' | 'admin';
+export type TabType = 'customers' | 'suppliers' | 'investments' | 'admin' | 'overview';
 
 interface DashboardScreenProps {
   onNavigate: (screen: string) => void;
@@ -99,6 +100,9 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
            <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>{adminProfile.adminName}</div>
         </div>
         <div className="sidebar-nav">
+          <button className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => onTabChange('overview')}>
+             Overview
+          </button>
           <button className={`nav-item ${activeTab === 'customers' ? 'active' : ''}`} onClick={() => onTabChange('customers')}>
             Customers
           </button>
@@ -118,6 +122,20 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
       </div>
 
       <div className="main-content">
+        {activeTab === 'overview' && (
+            <div className="view-container">
+                <div className="view-header">
+                     <span className="total-label" style={{fontSize: '1.5rem'}}>Overview</span>
+                </div>
+                <OverviewCharts
+                    customerCredit={totalCredit}
+                    supplierCredit={totalSuppliersCredit}
+                    investmentGiven={totalInvestmentGiven}
+                    investmentTaken={totalInvestmentTaken}
+                />
+            </div>
+        )}
+
         {activeTab === 'customers' && (
             <div className="view-container">
                 <div className="view-header">
