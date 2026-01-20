@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useApp, type Customer, type Supplier } from '../context/AppContext';
+import { useApp, type Customer, type Supplier, type Investment } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 import InvoiceModal from '../components/InvoiceModal';
 
@@ -12,9 +12,10 @@ interface DashboardScreenProps {
 }
 
 const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab, onTabChange }) => {
-  const { customers, suppliers, investments, totalCredit, addPayment, addSupplierPayment, logout, adminProfile, updateAdminProfile } = useApp();
+  const { customers, suppliers, investments, totalCredit, addPayment, addSupplierPayment, processInvestmentPayment, logout, adminProfile, updateAdminProfile } = useApp();
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
+  const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const [isInvoiceVisible, setIsInvoiceVisible] = useState(false);
@@ -29,12 +30,21 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
   const handlePaymentClick = (customer: Customer) => {
     setSelectedCustomer(customer);
     setSelectedSupplier(null);
+    setSelectedInvestment(null);
     setIsModalVisible(true);
   };
 
   const handleSupplierPaymentClick = (supplier: Supplier) => {
     setSelectedSupplier(supplier);
     setSelectedCustomer(null);
+    setSelectedInvestment(null);
+    setIsModalVisible(true);
+  };
+
+  const handleInvestmentPaymentClick = (investment: Investment) => {
+    setSelectedInvestment(investment);
+    setSelectedCustomer(null);
+    setSelectedSupplier(null);
     setIsModalVisible(true);
   };
 
@@ -53,6 +63,14 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
           amount,
           date: new Date().toLocaleString('en-LK'),
           payeeName: selectedSupplier.name
+      });
+      setIsInvoiceVisible(true);
+    } else if (selectedInvestment) {
+      processInvestmentPayment(selectedInvestment.id, amount);
+      setLastTransaction({
+          amount,
+          date: new Date().toLocaleString('en-LK'),
+          payeeName: selectedInvestment.name
       });
       setIsInvoiceVisible(true);
     }
@@ -233,7 +251,10 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                     <span className="card-sub">{item.mobile || 'No Contact'}</span>
                                     <span className="card-date">{new Date(item.date).toLocaleDateString()}</span>
                                 </div>
-                                <span className="card-amount" style={{color: '#10B981'}}>LKR {item.amount.toFixed(2)}</span>
+                                <div className="card-actions">
+                                    <span className="card-amount" style={{color: '#10B981'}}>LKR {item.amount.toFixed(2)}</span>
+                                    <button className="action-btn" style={{backgroundColor: '#10B981'}} onClick={() => handleInvestmentPaymentClick(item)}>Pay</button>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -246,7 +267,10 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                     <span className="card-sub">{item.mobile || 'No Contact'}</span>
                                     <span className="card-date">{new Date(item.date).toLocaleDateString()}</span>
                                 </div>
-                                <span className="card-amount" style={{color: '#EF4444'}}>LKR {item.amount.toFixed(2)}</span>
+                                <div className="card-actions">
+                                    <span className="card-amount" style={{color: '#EF4444'}}>LKR {item.amount.toFixed(2)}</span>
+                                    <button className="action-btn" style={{backgroundColor: '#EF4444'}} onClick={() => handleInvestmentPaymentClick(item)}>Pay</button>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -265,7 +289,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         onSubmit={handlePaymentSubmit}
-        payeeName={selectedCustomer ? selectedCustomer.name : selectedSupplier?.name}
+        payeeName={selectedCustomer ? selectedCustomer.name : selectedSupplier ? selectedSupplier.name : selectedInvestment?.name}
       />
 
       <InvoiceModal

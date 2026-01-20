@@ -49,6 +49,7 @@ interface AppContextType {
   addDebt: (customerId: string, amount: string | number) => void;
   addSupplier: (name: string, mobile: string, initialCredit?: string | number) => Supplier;
   addInvestment: (name: string, mobile: string, amount: string | number, type: 'given' | 'taken') => Investment;
+  processInvestmentPayment: (investmentId: string, amount: string | number) => void;
   updateAdminProfile: (profile: AdminProfile) => void;
   totalCredit: number;
 }
@@ -178,6 +179,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return newInvestment;
   };
 
+  const processInvestmentPayment = (investmentId: string, amount: string | number) => {
+    const numAmount = parseFloat(amount.toString());
+    if (isNaN(numAmount) || numAmount <= 0) return;
+
+    setInvestments((prev) => prev.map(i => {
+      if (i.id === investmentId) {
+        return { ...i, amount: i.amount - numAmount };
+      }
+      return i;
+    }));
+  };
+
   const updateAdminProfile = (profile: AdminProfile) => {
     setAdminProfile(profile);
   };
@@ -190,7 +203,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       customers, suppliers, investments,
       adminProfile,
       addCustomer, addPayment, addSupplierPayment, addDebt,
-      addSupplier, addInvestment, updateAdminProfile,
+      addSupplier, addInvestment, processInvestmentPayment, updateAdminProfile,
       totalCredit
     }}>
       {children}
