@@ -550,6 +550,48 @@ body {
   margin-top: 20px;
 }
 
+/* Add Customer/Supplier Container */
+.add-customer-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 40px;
+  background-color: var(--surface-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid #e2e8f0;
+}
+
+.add-customer-container h2 {
+  margin-top: 0;
+  margin-bottom: 32px;
+  color: var(--text-primary);
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.save-btn {
+  padding: 12px 24px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.save-btn:hover {
+  opacity: 0.9;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .app-layout {
