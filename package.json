@@ -4,5 +4,8 @@
   "scripts": {
     "dev": "cd credit-app && pnpm run dev",
     "mobile": "cd CustomerCreditSystem && npm start"
+  },
+  "dependencies": {
+    "recharts": "^3.6.0"
   }
 }
