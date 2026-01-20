@@ -34,7 +34,7 @@ const OverviewCharts: React.FC<OverviewChartsProps> = ({
             cx="50%"
             cy="50%"
             labelLine={true}
-            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+            label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
             outerRadius={150}
             fill="#8884d8"
             dataKey="value"
@@ -43,7 +43,7 @@ const OverviewCharts: React.FC<OverviewChartsProps> = ({
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
-          <Tooltip formatter={(value: number) => `LKR ${value.toFixed(2)}`} />
+          <Tooltip formatter={(value: number | undefined) => `LKR ${(value || 0).toFixed(2)}`} />
           <Legend />
         </PieChart>
       </ResponsiveContainer>
