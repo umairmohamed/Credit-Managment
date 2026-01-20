@@ -33,6 +33,7 @@ export interface AdminProfile {
   adminName: string;
   contactNumber: string;
   address: string;
+  shopLogo?: string;
 }
 
 interface AppContextType {
@@ -71,7 +72,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     shopName: '',
     adminName: '',
     contactNumber: '',
-    address: ''
+    address: '',
+    shopLogo: ''
   });
 
   const register = (username: string, password: string, mobile: string) => {
