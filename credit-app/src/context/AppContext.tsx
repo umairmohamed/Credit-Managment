@@ -25,6 +25,7 @@ export interface Investment {
 
 export interface User {
   username: string;
+  mobile?: string;
 }
 
 export interface AdminProfile {
@@ -41,7 +42,8 @@ interface AppContextType {
   investments: Investment[];
   adminProfile: AdminProfile;
   login: (username: string, password: string) => boolean;
-  register: (username: string, password: string) => boolean;
+  validateCredentials: (username: string, password: string) => {username: string, mobile?: string} | null;
+  register: (username: string, password: string, mobile: string) => boolean;
   logout: () => void;
   addCustomer: (name: string, mobile: string) => Customer;
   addPayment: (customerId: string, amount: string | number) => void;
@@ -61,7 +63,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [investments, setInvestments] = useState<Investment[]>([]);
-  const [registeredUsers, setRegisteredUsers] = useState([{username: 'admin', password: 'admin'}]);
+  const [registeredUsers, setRegisteredUsers] = useState<{username: string, password: string, mobile?: string}[]>(() => {
+    const saved = localStorage.getItem('creditApp_users');
+    return saved ? JSON.parse(saved) : [{username: 'admin', password: 'admin', mobile: '000000000'}];
+  });
   const [adminProfile, setAdminProfile] = useState<AdminProfile>({
     shopName: '',
     adminName: '',
@@ -69,18 +74,25 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     address: ''
   });
 
-  const register = (username: string, password: string) => {
+  const register = (username: string, password: string, mobile: string) => {
     if (registeredUsers.some(u => u.username === username)) {
       return false; // User exists
     }
-    setRegisteredUsers([...registeredUsers, { username, password }]);
+    const newUsers = [...registeredUsers, { username, password, mobile }];
+    setRegisteredUsers(newUsers);
+    localStorage.setItem('creditApp_users', JSON.stringify(newUsers));
     return true;
+  };
+
+  const validateCredentials = (username: string, password: string) => {
+    const validUser = registeredUsers.find(u => u.username === username && u.password === password);
+    return validUser || null;
   };
 
   const login = (username: string, password: string) => {
     const validUser = registeredUsers.find(u => u.username === username && u.password === password);
     if (validUser) {
-      setUser({ username });
+      setUser({ username, mobile: validUser.mobile });
       return true;
     }
     return false;
@@ -199,7 +211,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   return (
     <AppContext.Provider value={{
-      user, login, register, logout,
+      user, login, register, validateCredentials, logout,
       customers, suppliers, investments,
       adminProfile,
       addCustomer, addPayment, addSupplierPayment, addDebt,
