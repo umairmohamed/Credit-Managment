@@ -38,7 +38,7 @@ interface AppContextType {
   addCustomer: (name: string, mobile: string) => Customer;
   addPayment: (customerId: string, amount: string | number) => void;
   addDebt: (customerId: string, amount: string | number) => void;
-  addSupplier: (name: string, mobile: string) => Supplier;
+  addSupplier: (name: string, mobile: string, initialCredit?: string | number) => Supplier;
   addInvestment: (name: string, mobile: string, amount: string | number, type: 'given' | 'taken') => Investment;
   totalCredit: number;
 }
@@ -111,15 +111,24 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }));
   };
 
-  const addSupplier = (name: string, mobile: string) => {
+  const addSupplier = (name: string, mobile: string, initialCredit: string | number = 0) => {
     if (!/^\d{9}$/.test(mobile)) {
       throw new Error('Mobile number must be exactly 9 digits.');
     }
+
+    let creditAmount = 0;
+    if (initialCredit) {
+      const parsed = parseFloat(initialCredit.toString());
+      if (!isNaN(parsed)) {
+        creditAmount = parsed;
+      }
+    }
+
     const newSupplier: Supplier = {
       id: Date.now().toString() + Math.random().toString(),
       name,
       mobile,
-      credit: 0,
+      credit: creditAmount,
     };
     setSuppliers((prev) => [...prev, newSupplier]);
     return newSupplier;

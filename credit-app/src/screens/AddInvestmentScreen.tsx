@@ -26,7 +26,7 @@ const AddInvestmentScreen: React.FC<AddInvestmentScreenProps> = ({ onGoBack }) =
   };
 
   return (
-    <div className="add-customer-container glass-panel">
+    <div className="add-customer-container glass-panel" style={{ color: 'white' }}>
       <h2>Add New Investment</h2>
       <div className="form-group">
         <label>Investment Name / Title</label>
@@ -70,7 +70,7 @@ const AddInvestmentScreen: React.FC<AddInvestmentScreenProps> = ({ onGoBack }) =
         </select>
       </div>
       <div className="form-actions">
-          <button onClick={onGoBack} className="cancel-btn">Cancel</button>
+          <button onClick={onGoBack} className="cancel-btn" style={{ color: 'white', borderColor: 'white' }}>Cancel</button>
           <button onClick={handleSave} className="save-btn" style={{backgroundColor: '#10B981'}}>Save Investment</button>
       </div>
     </div>

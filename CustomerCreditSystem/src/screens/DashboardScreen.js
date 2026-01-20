@@ -26,7 +26,7 @@ const DashboardScreen = ({ navigation }) => {
         <Text style={styles.mobile}>{item.mobile}</Text>
       </View>
       <View style={styles.rightSection}>
-        <Text style={styles.credit}>Credit: ${item.credit.toFixed(2)}</Text>
+        <Text style={styles.credit}>Credit: LKR {item.credit.toFixed(2)}</Text>
         <Button title="Pay" onPress={() => handlePaymentClick(item)} />
       </View>
     </View>
@@ -36,7 +36,7 @@ const DashboardScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.totalLabel}>Total Credit</Text>
-        <Text style={styles.totalAmount}>${totalCredit.toFixed(2)}</Text>
+        <Text style={styles.totalAmount}>LKR {totalCredit.toFixed(2)}</Text>
         <Button title="Logout" onPress={logout} color="#555" />
       </View>
 

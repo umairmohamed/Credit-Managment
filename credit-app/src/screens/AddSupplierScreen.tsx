@@ -9,6 +9,7 @@ const AddSupplierScreen: React.FC<AddSupplierScreenProps> = ({ onGoBack }) => {
   const { addSupplier } = useApp();
   const [name, setName] = useState('');
   const [mobile, setMobile] = useState('');
+  const [amount, setAmount] = useState('');
 
   const handleSave = () => {
     if (!name || !mobile) {
@@ -16,7 +17,7 @@ const AddSupplierScreen: React.FC<AddSupplierScreenProps> = ({ onGoBack }) => {
       return;
     }
     try {
-      addSupplier(name, mobile);
+      addSupplier(name, mobile, amount);
       onGoBack();
     } catch (error: any) {
       alert('Error: ' + error.message);
@@ -24,7 +25,7 @@ const AddSupplierScreen: React.FC<AddSupplierScreenProps> = ({ onGoBack }) => {
   };
 
   return (
-    <div className="add-customer-container glass-panel">
+    <div className="add-customer-container glass-panel" style={{ color: 'white' }}>
       <h2>Add New Supplier</h2>
       <div className="form-group">
         <label>Supplier Name</label>
@@ -47,8 +48,18 @@ const AddSupplierScreen: React.FC<AddSupplierScreenProps> = ({ onGoBack }) => {
           className="form-input"
         />
       </div>
+      <div className="form-group">
+        <label>Amount to Settle (Initial Credit)</label>
+        <input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Enter Amount"
+          className="form-input"
+        />
+      </div>
       <div className="form-actions">
-          <button onClick={onGoBack} className="cancel-btn">Cancel</button>
+          <button onClick={onGoBack} className="cancel-btn" style={{ color: 'white', borderColor: 'white' }}>Cancel</button>
           <button onClick={handleSave} className="save-btn" style={{backgroundColor: '#F59E0B'}}>Save Supplier</button>
       </div>
     </div>

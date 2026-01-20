@@ -64,7 +64,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                 <div className="view-header glass-header">
                      <div className="total-credit-section">
                         <span className="total-label">Total Customer Credit</span>
-                        <span className="total-amount">${totalCredit.toFixed(2)}</span>
+                        <span className="total-amount">LKR {totalCredit.toFixed(2)}</span>
                      </div>
                 </div>
                 <div className="list-container">
@@ -78,7 +78,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                             <span className="card-sub">{item.mobile}</span>
                         </div>
                         <div className="card-actions">
-                            <span className="card-amount" style={{color: '#EF4444'}}>Credit: ${item.credit.toFixed(2)}</span>
+                            <span className="card-amount" style={{color: '#EF4444'}}>Credit: LKR {item.credit.toFixed(2)}</span>
                             <button onClick={() => handlePaymentClick(item)} className="action-btn pay-btn">Pay</button>
                         </div>
                         </div>
@@ -93,7 +93,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                 <div className="view-header glass-header">
                      <div className="total-credit-section">
                         <span className="total-label">Total Supplier Credit</span>
-                        <span className="total-amount" style={{ color: '#F59E0B', WebkitTextFillColor: '#F59E0B' }}>${totalSuppliersCredit.toFixed(2)}</span>
+                        <span className="total-amount" style={{ color: '#F59E0B', WebkitTextFillColor: '#F59E0B' }}>LKR {totalSuppliersCredit.toFixed(2)}</span>
                      </div>
                 </div>
                 <div className="list-container">
@@ -107,7 +107,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                             <span className="card-sub">{item.mobile}</span>
                         </div>
                         <div className="card-actions">
-                            <span className="card-amount" style={{color: '#F59E0B'}}>Due: ${item.credit.toFixed(2)}</span>
+                            <span className="card-amount" style={{color: '#F59E0B'}}>Due: LKR {item.credit.toFixed(2)}</span>
                             <button className="action-btn" style={{backgroundColor: '#F59E0B'}}>Pay</button>
                         </div>
                         </div>
@@ -122,11 +122,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                  <div className="investments-summary glass-header">
                     <div className="summary-item">
                         <span className="total-label">Total Given</span>
-                        <span className="total-amount" style={{ color: '#10B981', WebkitTextFillColor: '#10B981' }}>${totalInvestmentGiven.toFixed(2)}</span>
+                        <span className="total-amount" style={{ color: '#10B981', WebkitTextFillColor: '#10B981' }}>LKR {totalInvestmentGiven.toFixed(2)}</span>
                     </div>
                     <div className="summary-item">
                         <span className="total-label">Total Taken</span>
-                        <span className="total-amount" style={{ color: '#EF4444', WebkitTextFillColor: '#EF4444' }}>${totalInvestmentTaken.toFixed(2)}</span>
+                        <span className="total-amount" style={{ color: '#EF4444', WebkitTextFillColor: '#EF4444' }}>LKR {totalInvestmentTaken.toFixed(2)}</span>
                     </div>
                  </div>
 
@@ -140,7 +140,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                     <span className="card-sub">{item.mobile || 'No Contact'}</span>
                                     <span className="card-date">{new Date(item.date).toLocaleDateString()}</span>
                                 </div>
-                                <span className="card-amount" style={{color: '#10B981'}}>${item.amount.toFixed(2)}</span>
+                                <span className="card-amount" style={{color: '#10B981'}}>LKR {item.amount.toFixed(2)}</span>
                             </div>
                         ))}
                     </div>
@@ -153,7 +153,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                     <span className="card-sub">{item.mobile || 'No Contact'}</span>
                                     <span className="card-date">{new Date(item.date).toLocaleDateString()}</span>
                                 </div>
-                                <span className="card-amount" style={{color: '#EF4444'}}>${item.amount.toFixed(2)}</span>
+                                <span className="card-amount" style={{color: '#EF4444'}}>LKR {item.amount.toFixed(2)}</span>
                             </div>
                         ))}
                     </div>
