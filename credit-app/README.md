@@ -1,3 +1,42 @@
+# Credit Management App (Web)
+
+This is the web frontend for the Credit Management System, built with React, TypeScript, and Vite.
+
+## Setup
+
+To get started, you need to install the dependencies. This project uses `pnpm`.
+
+```bash
+cd credit-app
+pnpm install
+```
+
+## Running the App
+
+To start the development server:
+
+```bash
+pnpm run dev
+```
+
+The app will be available at http://localhost:5173 (or the port shown in the terminal).
+
+## Building
+
+To build the application for production:
+
+```bash
+pnpm run build
+```
+
+## Project Structure
+
+- `src/components`: Reusable UI components (Charts, Modals, etc.)
+- `src/screens`: Main screen views (Dashboard, Login, Add Forms)
+- `src/context`: Global state management (AppContext)
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
