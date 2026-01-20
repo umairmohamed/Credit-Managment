@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useApp, type Customer } from '../context/AppContext';
+import { useApp, type Customer, type Supplier } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
+import InvoiceModal from '../components/InvoiceModal';
 
-export type TabType = 'customers' | 'suppliers' | 'investments';
+export type TabType = 'customers' | 'suppliers' | 'investments' | 'admin';
 
 interface DashboardScreenProps {
   onNavigate: (screen: string) => void;
@@ -11,18 +12,43 @@ interface DashboardScreenProps {
 }
 
 const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab, onTabChange }) => {
-  const { customers, suppliers, investments, totalCredit, addPayment, logout } = useApp();
+  const { customers, suppliers, investments, totalCredit, addPayment, addSupplierPayment, logout, adminProfile, updateAdminProfile } = useApp();
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [isInvoiceVisible, setIsInvoiceVisible] = useState(false);
+  const [lastTransaction, setLastTransaction] = useState<{amount: string, date: string, payeeName: string} | null>(null);
 
   const handlePaymentClick = (customer: Customer) => {
     setSelectedCustomer(customer);
+    setSelectedSupplier(null);
+    setIsModalVisible(true);
+  };
+
+  const handleSupplierPaymentClick = (supplier: Supplier) => {
+    setSelectedSupplier(supplier);
+    setSelectedCustomer(null);
     setIsModalVisible(true);
   };
 
   const handlePaymentSubmit = (amount: string) => {
     if (selectedCustomer) {
       addPayment(selectedCustomer.id, amount);
+      setLastTransaction({
+          amount,
+          date: new Date().toLocaleDateString(),
+          payeeName: selectedCustomer.name
+      });
+      setIsInvoiceVisible(true);
+    } else if (selectedSupplier) {
+      addSupplierPayment(selectedSupplier.id, amount);
+      setLastTransaction({
+          amount,
+          date: new Date().toLocaleDateString(),
+          payeeName: selectedSupplier.name
+      });
+      setIsInvoiceVisible(true);
     }
   };
 
@@ -51,6 +77,9 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
           </button>
           <button className={`nav-item ${activeTab === 'investments' ? 'active' : ''}`} onClick={() => onTabChange('investments')}>
             Investments
+          </button>
+          <button className={`nav-item ${activeTab === 'admin' ? 'active' : ''}`} onClick={() => onTabChange('admin')}>
+            Admin Profile
           </button>
         </div>
         <div className="sidebar-footer">
@@ -88,6 +117,51 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
             </div>
         )}
 
+        {activeTab === 'admin' && (
+            <div className="view-container">
+                <div className="view-header glass-header">
+                    <span className="total-label" style={{fontSize: '1.5rem'}}>Admin Profile</span>
+                </div>
+                <div className="list-container" style={{padding: '20px'}}>
+                   <div className="glass-card" style={{padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px'}}>
+                      <div className="form-group">
+                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Shop Name</label>
+                          <input
+                            className="modal-input"
+                            value={adminProfile.shopName}
+                            onChange={(e) => updateAdminProfile({...adminProfile, shopName: e.target.value})}
+                          />
+                      </div>
+                      <div className="form-group">
+                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Admin Name</label>
+                          <input
+                            className="modal-input"
+                            value={adminProfile.adminName}
+                            onChange={(e) => updateAdminProfile({...adminProfile, adminName: e.target.value})}
+                          />
+                      </div>
+                      <div className="form-group">
+                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Contact Number</label>
+                          <input
+                            className="modal-input"
+                            value={adminProfile.contactNumber}
+                            onChange={(e) => updateAdminProfile({...adminProfile, contactNumber: e.target.value})}
+                          />
+                      </div>
+                      <div className="form-group">
+                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Address</label>
+                          <textarea
+                            className="modal-input"
+                            style={{minHeight: '80px', paddingTop: '10px'}}
+                            value={adminProfile.address}
+                            onChange={(e) => updateAdminProfile({...adminProfile, address: e.target.value})}
+                          />
+                      </div>
+                   </div>
+                </div>
+            </div>
+        )}
+
         {activeTab === 'suppliers' && (
             <div className="view-container">
                 <div className="view-header glass-header">
@@ -108,7 +182,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                         </div>
                         <div className="card-actions">
                             <span className="card-amount" style={{color: '#F59E0B'}}>Due: LKR {item.credit.toFixed(2)}</span>
-                            <button className="action-btn" style={{backgroundColor: '#F59E0B'}}>Pay</button>
+                            <button className="action-btn" style={{backgroundColor: '#F59E0B'}} onClick={() => handleSupplierPaymentClick(item)}>Pay</button>
                         </div>
                         </div>
                     ))
@@ -172,7 +246,14 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
         onSubmit={handlePaymentSubmit}
-        customerName={selectedCustomer?.name}
+        payeeName={selectedCustomer ? selectedCustomer.name : selectedSupplier?.name}
+      />
+
+      <InvoiceModal
+        visible={isInvoiceVisible}
+        onClose={() => setIsInvoiceVisible(false)}
+        transactionDetails={lastTransaction}
+        adminProfile={adminProfile}
       />
     </div>
   );

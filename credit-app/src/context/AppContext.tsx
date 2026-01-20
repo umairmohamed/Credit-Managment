@@ -27,19 +27,29 @@ export interface User {
   username: string;
 }
 
+export interface AdminProfile {
+  shopName: string;
+  adminName: string;
+  contactNumber: string;
+  address: string;
+}
+
 interface AppContextType {
   user: User | null;
   customers: Customer[];
   suppliers: Supplier[];
   investments: Investment[];
+  adminProfile: AdminProfile;
   login: (username: string, password: string) => boolean;
   register: (username: string, password: string) => boolean;
   logout: () => void;
   addCustomer: (name: string, mobile: string) => Customer;
   addPayment: (customerId: string, amount: string | number) => void;
+  addSupplierPayment: (supplierId: string, amount: string | number) => void;
   addDebt: (customerId: string, amount: string | number) => void;
   addSupplier: (name: string, mobile: string, initialCredit?: string | number) => Supplier;
   addInvestment: (name: string, mobile: string, amount: string | number, type: 'given' | 'taken') => Investment;
+  updateAdminProfile: (profile: AdminProfile) => void;
   totalCredit: number;
 }
 
@@ -51,6 +61,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [investments, setInvestments] = useState<Investment[]>([]);
   const [registeredUsers, setRegisteredUsers] = useState([{username: 'admin', password: 'admin'}]);
+  const [adminProfile, setAdminProfile] = useState<AdminProfile>({
+    shopName: '',
+    adminName: '',
+    contactNumber: '',
+    address: ''
+  });
 
   const register = (username: string, password: string) => {
     if (registeredUsers.some(u => u.username === username)) {
@@ -96,6 +112,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         return { ...c, credit: c.credit - numAmount };
       }
       return c;
+    }));
+  };
+
+  const addSupplierPayment = (supplierId: string, amount: string | number) => {
+    const numAmount = parseFloat(amount.toString());
+    if (isNaN(numAmount) || numAmount <= 0) return;
+
+    setSuppliers((prev) => prev.map(s => {
+      if (s.id === supplierId) {
+        return { ...s, credit: s.credit - numAmount };
+      }
+      return s;
     }));
   };
 
@@ -150,14 +178,19 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     return newInvestment;
   };
 
+  const updateAdminProfile = (profile: AdminProfile) => {
+    setAdminProfile(profile);
+  };
+
   const totalCredit = customers.reduce((sum, c) => sum + c.credit, 0);
 
   return (
     <AppContext.Provider value={{
       user, login, register, logout,
       customers, suppliers, investments,
-      addCustomer, addPayment, addDebt,
-      addSupplier, addInvestment,
+      adminProfile,
+      addCustomer, addPayment, addSupplierPayment, addDebt,
+      addSupplier, addInvestment, updateAdminProfile,
       totalCredit
     }}>
       {children}
