@@ -4,10 +4,10 @@ interface PaymentModalProps {
   visible: boolean;
   onClose: () => void;
   onSubmit: (amount: string) => void;
-  customerName: string | undefined;
+  payeeName: string | undefined;
 }
 
-const PaymentModal: React.FC<PaymentModalProps> = ({ visible, onClose, onSubmit, customerName }) => {
+const PaymentModal: React.FC<PaymentModalProps> = ({ visible, onClose, onSubmit, payeeName }) => {
   const [amount, setAmount] = useState('');
 
   if (!visible) return null;
@@ -26,7 +26,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ visible, onClose, onSubmit,
     <div className="modal-overlay">
       <div className="modal-content">
         <h3>Add Payment</h3>
-        <p>For: {customerName}</p>
+        <p>For: {payeeName}</p>
         <input
           type="number"
           placeholder="Amount"
