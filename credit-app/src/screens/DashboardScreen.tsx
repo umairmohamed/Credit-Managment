@@ -22,6 +22,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
   const [lastTransaction, setLastTransaction] = useState<{amount: string, date: string, payeeName: string} | null>(null);
 
   const [localAdminProfile, setLocalAdminProfile] = useState(adminProfile);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
 
   useEffect(() => {
     setLocalAdminProfile(adminProfile);
@@ -84,7 +85,19 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
 
   const handleSaveProfile = () => {
     updateAdminProfile(localAdminProfile);
+    setIsEditingProfile(false);
     window.alert('Profile Saved Successfully!');
+  };
+
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setLocalAdminProfile({ ...localAdminProfile, shopLogo: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const totalSuppliersCredit = suppliers.reduce((sum, s) => sum + s.credit, 0);
@@ -95,8 +108,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
     <div className="app-layout">
       <div className="sidebar">
         <div className="sidebar-header">
-           <h2 style={{ fontSize: '2rem', marginBottom: '5px' }}>{adminProfile.shopName || 'Credit App'}</h2>
-           <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>{adminProfile.adminName}</div>
+           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+              {adminProfile.shopLogo && <img src={adminProfile.shopLogo} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} />}
+              <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{adminProfile.shopName || 'Credit App'}</h2>
+           </div>
+           <div style={{ fontSize: '0.9rem', opacity: 0.8, paddingLeft: adminProfile.shopLogo ? '50px' : '0' }}>{adminProfile.adminName}</div>
         </div>
         <div className="sidebar-nav">
           <button className={`nav-item ${activeTab === 'customers' ? 'active' : ''}`} onClick={() => onTabChange('customers')}>
@@ -151,50 +167,99 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
             <div className="view-container">
                 <div className="view-header">
                     <span className="total-label" style={{fontSize: '1.5rem'}}>Admin Profile</span>
+                    {!isEditingProfile && (
+                        <button className="action-btn" onClick={() => setIsEditingProfile(true)} style={{backgroundColor: '#4F46E5'}}>Edit Profile</button>
+                    )}
                 </div>
                 <div className="list-container" style={{padding: '20px'}}>
-                   <div style={{padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px'}}>
-                      <div className="form-group">
-                          <label style={{display: 'block', marginBottom: '5px'}}>Shop Name</label>
-                          <input
-                            className="modal-input"
-                            value={localAdminProfile.shopName}
-                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, shopName: e.target.value})}
-                          />
-                      </div>
-                      <div className="form-group">
-                          <label style={{display: 'block', marginBottom: '5px'}}>Admin Name</label>
-                          <input
-                            className="modal-input"
-                            value={localAdminProfile.adminName}
-                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, adminName: e.target.value})}
-                          />
-                      </div>
-                      <div className="form-group">
-                          <label style={{display: 'block', marginBottom: '5px'}}>Contact Number</label>
-                          <input
-                            className="modal-input"
-                            value={localAdminProfile.contactNumber}
-                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, contactNumber: e.target.value})}
-                          />
-                      </div>
-                      <div className="form-group">
-                          <label style={{display: 'block', marginBottom: '5px'}}>Address</label>
-                          <textarea
-                            className="modal-input"
-                            style={{minHeight: '80px', paddingTop: '10px'}}
-                            value={localAdminProfile.address}
-                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, address: e.target.value})}
-                          />
-                      </div>
-                      <button
-                        onClick={handleSaveProfile}
-                        className="action-btn"
-                        style={{backgroundColor: '#10B981', alignSelf: 'flex-start', marginTop: '10px'}}
-                      >
-                        Save Profile
-                      </button>
-                   </div>
+                   {!isEditingProfile ? (
+                       <div className="profile-overview card" style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                                {adminProfile.shopLogo ? (
+                                    <img src={adminProfile.shopLogo} alt="Shop Logo" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #e5e7eb' }} />
+                                ) : (
+                                    <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>No Logo</div>
+                                )}
+                                <div>
+                                    <h2 style={{ margin: 0, fontSize: '2rem' }}>{adminProfile.shopName || 'N/A'}</h2>
+                                    <p style={{ margin: '5px 0', color: '#6b7280' }}>{adminProfile.adminName}</p>
+                                </div>
+                            </div>
+                            <div style={{ width: '100%', height: '1px', background: '#e5e7eb' }}></div>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', width: '100%', gap: '20px' }}>
+                                <div>
+                                    <label style={{ fontSize: '0.9rem', color: '#6b7280', fontWeight: 600 }}>Contact Number</label>
+                                    <p style={{ fontSize: '1.1rem', margin: '5px 0' }}>{adminProfile.contactNumber || 'N/A'}</p>
+                                </div>
+                                <div>
+                                    <label style={{ fontSize: '0.9rem', color: '#6b7280', fontWeight: 600 }}>Address</label>
+                                    <p style={{ fontSize: '1.1rem', margin: '5px 0' }}>{adminProfile.address || 'N/A'}</p>
+                                </div>
+                            </div>
+                       </div>
+                   ) : (
+                       <div style={{padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px'}} className="card">
+                          <div className="form-group">
+                              <label style={{display: 'block', marginBottom: '5px'}}>Shop Logo</label>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleLogoChange}
+                                className="modal-input"
+                              />
+                              {localAdminProfile.shopLogo && <img src={localAdminProfile.shopLogo} alt="Preview" style={{ width: '60px', height: '60px', marginTop: '10px', borderRadius: '8px', objectFit: 'cover' }} />}
+                          </div>
+                          <div className="form-group">
+                              <label style={{display: 'block', marginBottom: '5px'}}>Shop Name</label>
+                              <input
+                                className="modal-input"
+                                value={localAdminProfile.shopName}
+                                onChange={(e) => setLocalAdminProfile({...localAdminProfile, shopName: e.target.value})}
+                              />
+                          </div>
+                          <div className="form-group">
+                              <label style={{display: 'block', marginBottom: '5px'}}>Admin Name</label>
+                              <input
+                                className="modal-input"
+                                value={localAdminProfile.adminName}
+                                onChange={(e) => setLocalAdminProfile({...localAdminProfile, adminName: e.target.value})}
+                              />
+                          </div>
+                          <div className="form-group">
+                              <label style={{display: 'block', marginBottom: '5px'}}>Contact Number</label>
+                              <input
+                                className="modal-input"
+                                value={localAdminProfile.contactNumber}
+                                onChange={(e) => setLocalAdminProfile({...localAdminProfile, contactNumber: e.target.value})}
+                              />
+                          </div>
+                          <div className="form-group">
+                              <label style={{display: 'block', marginBottom: '5px'}}>Address</label>
+                              <textarea
+                                className="modal-input"
+                                style={{minHeight: '80px', paddingTop: '10px'}}
+                                value={localAdminProfile.address}
+                                onChange={(e) => setLocalAdminProfile({...localAdminProfile, address: e.target.value})}
+                              />
+                          </div>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                              <button
+                                onClick={handleSaveProfile}
+                                className="action-btn"
+                                style={{backgroundColor: '#10B981', marginTop: '10px'}}
+                              >
+                                Save Profile
+                              </button>
+                              <button
+                                onClick={() => setIsEditingProfile(false)}
+                                className="action-btn"
+                                style={{backgroundColor: '#9CA3AF', marginTop: '10px'}}
+                              >
+                                Cancel
+                              </button>
+                          </div>
+                       </div>
+                   )}
                 </div>
             </div>
         )}
@@ -278,11 +343,13 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
             </div>
         )}
 
-        <div className="fab-container-floating">
-           <button onClick={handleFabClick} className={`fab-btn ${activeTab}`}>
-               +
-           </button>
-        </div>
+        {activeTab !== 'admin' && (
+            <div className="fab-container-floating">
+               <button onClick={handleFabClick} className={`fab-btn ${activeTab}`}>
+                   +
+               </button>
+            </div>
+        )}
       </div>
 
       <PaymentModal

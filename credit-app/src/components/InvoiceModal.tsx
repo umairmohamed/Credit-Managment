@@ -24,6 +24,19 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ visible, onClose, transacti
       <div className="modal-content invoice-modal-content">
         <div id="invoice-area" className="invoice-box">
           <div className="invoice-header">
+            {adminProfile.shopLogo && (
+              <img
+                src={adminProfile.shopLogo}
+                alt="Logo"
+                style={{
+                  width: '80px',
+                  height: '80px',
+                  marginBottom: '10px',
+                  borderRadius: '50%',
+                  objectFit: 'cover'
+                }}
+              />
+            )}
             <h2>{adminProfile.shopName || 'Shop Name'}</h2>
             <p>Admin: {adminProfile.adminName || 'Admin'}</p>
             <p>Contact: {adminProfile.contactNumber || 'N/A'}</p>
