@@ -80,9 +80,20 @@ body {
   margin-bottom: 20px;
 }
 
+.login-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+}
+
 .login-input {
   width: 100%;
-  padding: 14px 16px;
+  padding: 14px 16px 14px 44px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 12px;
   font-size: 1rem;
