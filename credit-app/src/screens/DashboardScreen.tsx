@@ -75,7 +75,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
 
   return (
     <div className="app-layout">
-      <div className="sidebar glass-panel-sidebar">
+      <div className="sidebar">
         <div className="sidebar-header">
            <h2 style={{ fontSize: '2rem', marginBottom: '5px' }}>{adminProfile.shopName || 'Credit App'}</h2>
            <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>{adminProfile.adminName}</div>
@@ -102,7 +102,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
       <div className="main-content">
         {activeTab === 'customers' && (
             <div className="view-container">
-                <div className="view-header glass-header">
+                <div className="view-header">
                      <div className="total-credit-section">
                         <span className="total-label">Total Customer Credit</span>
                         <span className="total-amount">LKR {totalCredit.toFixed(2)}</span>
@@ -113,7 +113,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                     <p className="empty-text">No customers found.</p>
                     ) : (
                     customers.map((item) => (
-                        <div key={item.id} className="card glass-card customer-card-style">
+                        <div key={item.id} className="card customer-card">
                         <div className="card-info">
                             <span className="card-name">{item.name}</span>
                             <span className="card-sub">{item.mobile}</span>
@@ -131,13 +131,13 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
 
         {activeTab === 'admin' && (
             <div className="view-container">
-                <div className="view-header glass-header">
+                <div className="view-header">
                     <span className="total-label" style={{fontSize: '1.5rem'}}>Admin Profile</span>
                 </div>
                 <div className="list-container" style={{padding: '20px'}}>
-                   <div className="glass-card" style={{padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px'}}>
+                   <div style={{padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px'}}>
                       <div className="form-group">
-                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Shop Name</label>
+                          <label style={{display: 'block', marginBottom: '5px'}}>Shop Name</label>
                           <input
                             className="modal-input"
                             value={localAdminProfile.shopName}
@@ -145,7 +145,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                           />
                       </div>
                       <div className="form-group">
-                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Admin Name</label>
+                          <label style={{display: 'block', marginBottom: '5px'}}>Admin Name</label>
                           <input
                             className="modal-input"
                             value={localAdminProfile.adminName}
@@ -153,7 +153,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                           />
                       </div>
                       <div className="form-group">
-                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Contact Number</label>
+                          <label style={{display: 'block', marginBottom: '5px'}}>Contact Number</label>
                           <input
                             className="modal-input"
                             value={localAdminProfile.contactNumber}
@@ -161,7 +161,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                           />
                       </div>
                       <div className="form-group">
-                          <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Address</label>
+                          <label style={{display: 'block', marginBottom: '5px'}}>Address</label>
                           <textarea
                             className="modal-input"
                             style={{minHeight: '80px', paddingTop: '10px'}}
@@ -183,7 +183,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
 
         {activeTab === 'suppliers' && (
             <div className="view-container">
-                <div className="view-header glass-header">
+                <div className="view-header">
                      <div className="total-credit-section">
                         <span className="total-label">Total Supplier Credit</span>
                         <span className="total-amount" style={{ color: '#F59E0B', WebkitTextFillColor: '#F59E0B' }}>LKR {totalSuppliersCredit.toFixed(2)}</span>
@@ -194,7 +194,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                     <p className="empty-text">No suppliers found.</p>
                     ) : (
                     suppliers.map((item) => (
-                        <div key={item.id} className="card glass-card supplier-card-style">
+                        <div key={item.id} className="card supplier-card">
                         <div className="card-info">
                             <span className="card-name">{item.name}</span>
                             <span className="card-sub">{item.mobile}</span>
@@ -212,7 +212,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
 
         {activeTab === 'investments' && (
             <div className="view-container">
-                 <div className="investments-summary glass-header">
+                 <div className="investments-summary">
                     <div className="summary-item">
                         <span className="total-label">Total Given</span>
                         <span className="total-amount" style={{ color: '#10B981', WebkitTextFillColor: '#10B981' }}>LKR {totalInvestmentGiven.toFixed(2)}</span>
@@ -227,7 +227,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                     <div className="investment-section given-section">
                         <h3 className="section-title">Given</h3>
                         {investments.filter(i => i.type === 'given').map(item => (
-                            <div key={item.id} className="card glass-card investment-card given">
+                            <div key={item.id} className="card investment-card given">
                                  <div className="card-info">
                                     <span className="card-name">{item.name}</span>
                                     <span className="card-sub">{item.mobile || 'No Contact'}</span>
@@ -240,7 +240,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                     <div className="investment-section taken-section">
                         <h3 className="section-title">Taken</h3>
                         {investments.filter(i => i.type === 'taken').map(item => (
-                            <div key={item.id} className="card glass-card investment-card taken">
+                            <div key={item.id} className="card investment-card taken">
                                  <div className="card-info">
                                     <span className="card-name">{item.name}</span>
                                     <span className="card-sub">{item.mobile || 'No Contact'}</span>

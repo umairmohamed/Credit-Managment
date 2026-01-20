@@ -28,7 +28,7 @@ const AddCustomerScreen: React.FC<AddCustomerScreenProps> = ({ onGoBack }) => {
   };
 
   return (
-    <div className="add-customer-container glass-panel" style={{ color: 'white' }}>
+    <div className="add-customer-container">
       <h2>Add New Customer</h2>
       <div className="form-group">
         <label>Customer Name</label>
@@ -62,7 +62,7 @@ const AddCustomerScreen: React.FC<AddCustomerScreenProps> = ({ onGoBack }) => {
         />
       </div>
       <div className="form-actions">
-          <button onClick={onGoBack} className="cancel-btn" style={{ color: 'white', borderColor: 'white' }}>Cancel</button>
+          <button onClick={onGoBack} className="cancel-btn">Cancel</button>
           <button onClick={handleSave} className="save-btn">Save Customer</button>
       </div>
     </div>
