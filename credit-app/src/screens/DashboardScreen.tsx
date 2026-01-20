@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp, type Customer, type Supplier } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 import InvoiceModal from '../components/InvoiceModal';
@@ -20,6 +20,12 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
   const [isInvoiceVisible, setIsInvoiceVisible] = useState(false);
   const [lastTransaction, setLastTransaction] = useState<{amount: string, date: string, payeeName: string} | null>(null);
 
+  const [localAdminProfile, setLocalAdminProfile] = useState(adminProfile);
+
+  useEffect(() => {
+    setLocalAdminProfile(adminProfile);
+  }, [adminProfile]);
+
   const handlePaymentClick = (customer: Customer) => {
     setSelectedCustomer(customer);
     setSelectedSupplier(null);
@@ -37,7 +43,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
       addPayment(selectedCustomer.id, amount);
       setLastTransaction({
           amount,
-          date: new Date().toLocaleDateString(),
+          date: new Date().toLocaleString('en-LK'),
           payeeName: selectedCustomer.name
       });
       setIsInvoiceVisible(true);
@@ -45,7 +51,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
       addSupplierPayment(selectedSupplier.id, amount);
       setLastTransaction({
           amount,
-          date: new Date().toLocaleDateString(),
+          date: new Date().toLocaleString('en-LK'),
           payeeName: selectedSupplier.name
       });
       setIsInvoiceVisible(true);
@@ -58,6 +64,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
       else if (activeTab === 'investments') onNavigate('AddInvestment');
   };
 
+  const handleSaveProfile = () => {
+    updateAdminProfile(localAdminProfile);
+    window.alert('Profile Saved Successfully!');
+  };
+
   const totalSuppliersCredit = suppliers.reduce((sum, s) => sum + s.credit, 0);
   const totalInvestmentGiven = investments.filter(i => i.type === 'given').reduce((sum, i) => sum + i.amount, 0);
   const totalInvestmentTaken = investments.filter(i => i.type === 'taken').reduce((sum, i) => sum + i.amount, 0);
@@ -66,7 +77,8 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
     <div className="app-layout">
       <div className="sidebar glass-panel-sidebar">
         <div className="sidebar-header">
-           <h2>Credit App</h2>
+           <h2 style={{ fontSize: '2rem', marginBottom: '5px' }}>{adminProfile.shopName || 'Credit App'}</h2>
+           <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>{adminProfile.adminName}</div>
         </div>
         <div className="sidebar-nav">
           <button className={`nav-item ${activeTab === 'customers' ? 'active' : ''}`} onClick={() => onTabChange('customers')}>
@@ -128,24 +140,24 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                           <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Shop Name</label>
                           <input
                             className="modal-input"
-                            value={adminProfile.shopName}
-                            onChange={(e) => updateAdminProfile({...adminProfile, shopName: e.target.value})}
+                            value={localAdminProfile.shopName}
+                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, shopName: e.target.value})}
                           />
                       </div>
                       <div className="form-group">
                           <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Admin Name</label>
                           <input
                             className="modal-input"
-                            value={adminProfile.adminName}
-                            onChange={(e) => updateAdminProfile({...adminProfile, adminName: e.target.value})}
+                            value={localAdminProfile.adminName}
+                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, adminName: e.target.value})}
                           />
                       </div>
                       <div className="form-group">
                           <label style={{color: 'white', display: 'block', marginBottom: '5px'}}>Contact Number</label>
                           <input
                             className="modal-input"
-                            value={adminProfile.contactNumber}
-                            onChange={(e) => updateAdminProfile({...adminProfile, contactNumber: e.target.value})}
+                            value={localAdminProfile.contactNumber}
+                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, contactNumber: e.target.value})}
                           />
                       </div>
                       <div className="form-group">
@@ -153,10 +165,17 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                           <textarea
                             className="modal-input"
                             style={{minHeight: '80px', paddingTop: '10px'}}
-                            value={adminProfile.address}
-                            onChange={(e) => updateAdminProfile({...adminProfile, address: e.target.value})}
+                            value={localAdminProfile.address}
+                            onChange={(e) => setLocalAdminProfile({...localAdminProfile, address: e.target.value})}
                           />
                       </div>
+                      <button
+                        onClick={handleSaveProfile}
+                        className="action-btn"
+                        style={{backgroundColor: '#10B981', alignSelf: 'flex-start', marginTop: '10px'}}
+                      >
+                        Save Profile
+                      </button>
                    </div>
                 </div>
             </div>
