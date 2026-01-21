@@ -71,7 +71,7 @@ const AddInvestmentScreen: React.FC<AddInvestmentScreenProps> = ({ onGoBack }) =
       </div>
       <div className="form-actions">
           <button onClick={onGoBack} className="cancel-btn">Cancel</button>
-          <button onClick={handleSave} className="save-btn" style={{backgroundColor: '#10B981'}}>Save Investment</button>
+          <button onClick={handleSave} className="save-btn" style={{color: '#10B981'}}>Save Investment</button>
       </div>
     </div>
   );

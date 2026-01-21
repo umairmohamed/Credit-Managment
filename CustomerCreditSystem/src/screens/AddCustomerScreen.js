@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { useApp } from '../context/AppContext';
 
 const AddCustomerScreen = ({ navigation }) => {
@@ -32,6 +32,7 @@ const AddCustomerScreen = ({ navigation }) => {
         value={name}
         onChangeText={setName}
         placeholder="Enter Name"
+        placeholderTextColor="#7D8498"
       />
       <Text style={styles.label}>Mobile Number</Text>
       <TextInput
@@ -39,6 +40,7 @@ const AddCustomerScreen = ({ navigation }) => {
         value={mobile}
         onChangeText={setMobile}
         placeholder="Enter 9-digit Mobile Number"
+        placeholderTextColor="#7D8498"
         keyboardType="phone-pad"
         maxLength={9}
       />
@@ -48,9 +50,13 @@ const AddCustomerScreen = ({ navigation }) => {
         value={initialCredit}
         onChangeText={setInitialCredit}
         placeholder="Enter Initial Credit Amount"
+        placeholderTextColor="#7D8498"
         keyboardType="numeric"
       />
-      <Button title="Save Customer" onPress={handleSave} />
+
+      <TouchableOpacity style={styles.saveBtn} onPress={handleSave}>
+          <Text style={styles.saveBtnText}>Save Customer</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -59,20 +65,46 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#EFEEEE',
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 8,
+    color: '#3E4152',
+    marginTop: 10,
   },
   input: {
+    backgroundColor: '#EFEEEE',
+    padding: 15,
+    marginBottom: 10,
+    borderRadius: 12,
+    color: '#3E4152',
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 20,
-    borderRadius: 5,
+    borderColor: 'rgba(255,255,255,0.5)',
+    shadowColor: '#A3B1C6',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
   },
+  saveBtn: {
+      backgroundColor: '#EFEEEE',
+      padding: 16,
+      borderRadius: 12,
+      alignItems: 'center',
+      marginTop: 20,
+      shadowColor: '#A3B1C6',
+      shadowOffset: { width: 4, height: 4 },
+      shadowOpacity: 0.4,
+      shadowRadius: 6,
+      elevation: 5,
+  },
+  saveBtnText: {
+      color: '#4F46E5',
+      fontWeight: 'bold',
+      fontSize: 16,
+  }
 });
 
 export default AddCustomerScreen;

@@ -27,7 +27,9 @@ const DashboardScreen = ({ navigation }) => {
       </View>
       <View style={styles.rightSection}>
         <Text style={styles.credit}>Credit: LKR {item.credit.toFixed(2)}</Text>
-        <Button title="Pay" onPress={() => handlePaymentClick(item)} />
+        <TouchableOpacity style={styles.payBtn} onPress={() => handlePaymentClick(item)}>
+            <Text style={styles.payBtnText}>Pay</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -37,7 +39,9 @@ const DashboardScreen = ({ navigation }) => {
       <View style={styles.header}>
         <Text style={styles.totalLabel}>Total Credit</Text>
         <Text style={styles.totalAmount}>LKR {totalCredit.toFixed(2)}</Text>
-        <Button title="Logout" onPress={logout} color="#555" />
+        <TouchableOpacity onPress={logout} style={styles.logoutBtn}>
+            <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -49,7 +53,9 @@ const DashboardScreen = ({ navigation }) => {
       />
 
       <View style={styles.fabContainer}>
-         <Button title="Add Customer" onPress={() => navigation.navigate('AddCustomer')} />
+         <TouchableOpacity style={styles.fab} onPress={() => navigation.navigate('AddCustomer')}>
+            <Text style={styles.fabText}>+</Text>
+         </TouchableOpacity>
       </View>
 
       <PaymentModal
@@ -65,57 +71,73 @@ const DashboardScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6', // Matching web bg
+    backgroundColor: '#EFEEEE',
   },
   header: {
-    backgroundColor: '#4F46E5', // Matching web primary
+    backgroundColor: '#EFEEEE',
     padding: 24,
     alignItems: 'center',
     marginBottom: 16,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    shadowColor: '#4F46E5',
-    shadowOffset: { width: 0, height: 4 },
+    shadowColor: '#A3B1C6',
+    shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowRadius: 10,
     elevation: 5,
   },
   totalLabel: {
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: '#7D8498',
     fontSize: 14,
     textTransform: 'uppercase',
     letterSpacing: 1,
+    marginBottom: 4,
   },
   totalAmount: {
-    color: '#fff',
+    color: '#3E4152',
     fontSize: 36,
     fontWeight: '800',
     marginBottom: 12,
+  },
+  logoutBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#EFEEEE',
+    borderRadius: 12,
+    shadowColor: '#A3B1C6',
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  logoutText: {
+    color: '#EF4444',
+    fontWeight: '600',
   },
   list: {
     padding: 16,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#EFEEEE',
     padding: 20,
-    marginBottom: 12,
-    borderRadius: 16, // More rounded
+    marginBottom: 16,
+    borderRadius: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowColor: '#A3B1C6',
+    shadowOffset: { width: 5, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
   },
   name: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1F2937',
+    color: '#3E4152',
   },
   mobile: {
-    color: '#6B7280',
+    color: '#7D8498',
     marginTop: 4,
   },
   rightSection: {
@@ -127,13 +149,48 @@ const styles = StyleSheet.create({
     color: '#EF4444',
     marginBottom: 8,
   },
+  payBtn: {
+    backgroundColor: '#EFEEEE',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    shadowColor: '#A3B1C6',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  payBtnText: {
+    color: '#4F46E5',
+    fontWeight: '600',
+  },
   emptyText: {
     textAlign: 'center',
     marginTop: 20,
     color: '#999',
   },
   fabContainer: {
-      padding: 20,
+      position: 'absolute',
+      bottom: 30,
+      right: 30,
+  },
+  fab: {
+      width: 60,
+      height: 60,
+      borderRadius: 30,
+      backgroundColor: '#EFEEEE',
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: '#A3B1C6',
+      shadowOffset: { width: 4, height: 4 },
+      shadowOpacity: 0.4,
+      shadowRadius: 6,
+      elevation: 5,
+  },
+  fabText: {
+      fontSize: 30,
+      color: '#4F46E5',
+      marginTop: -2,
   }
 });
 

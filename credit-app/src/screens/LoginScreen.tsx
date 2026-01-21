@@ -65,8 +65,8 @@ const LoginScreen: React.FC = () => {
     <div className="login-background">
       <div className="login-container">
         <div style={{ marginBottom: '30px' }}>
-          <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>{isRegistering ? 'Create Account' : 'Welcome Back'}</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.95rem' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '10px', color: 'var(--text-primary)' }}>{isRegistering ? 'Create Account' : 'Welcome Back'}</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
             {isRegistering ? 'Sign up to get started' : 'Enter your credentials to access your account'}
           </p>
         </div>
