@@ -15,9 +15,11 @@ const AppNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#4F46E5',
+          backgroundColor: '#EFEEEE', // Neumorphic light gray
+          elevation: 0, // Remove flat shadow to handle it differently or keep flat
+          shadowOpacity: 0, // iOS
         },
-        headerTintColor: '#fff',
+        headerTintColor: '#3E4152', // Dark text
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -28,7 +30,7 @@ const AppNavigator = () => {
           <Stack.Screen
             name="Dashboard"
             component={DashboardScreen}
-            options={{ title: 'Customer Credit System', headerShadowVisible: false }}
+            options={{ title: 'Customer Credit System' }}
           />
           <Stack.Screen
             name="AddCustomer"

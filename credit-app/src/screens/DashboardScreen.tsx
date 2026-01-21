@@ -109,7 +109,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
       <div className="sidebar">
         <div className="sidebar-header">
            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-              {adminProfile.shopLogo && <img src={adminProfile.shopLogo} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} />}
+              {adminProfile.shopLogo && <img src={adminProfile.shopLogo} alt="Logo" style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', boxShadow: 'var(--shadow-out)' }} />}
               <h2 style={{ fontSize: '1.5rem', margin: 0 }}>{adminProfile.shopName || 'Credit App'}</h2>
            </div>
            <div style={{ fontSize: '0.9rem', opacity: 0.8, paddingLeft: adminProfile.shopLogo ? '50px' : '0' }}>{adminProfile.adminName}</div>
@@ -154,7 +154,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                         </div>
                         <div className="card-actions">
                             <span className="card-amount" style={{color: '#EF4444'}}>Credit: LKR {item.credit.toFixed(2)}</span>
-                            <button onClick={() => handlePaymentClick(item)} className="action-btn pay-btn">Pay</button>
+                            <button onClick={() => handlePaymentClick(item)} className="action-btn pay-btn" style={{color: '#4F46E5'}}>Pay</button>
                         </div>
                         </div>
                     ))
@@ -168,7 +168,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                 <div className="view-header">
                     <span className="total-label" style={{fontSize: '1.5rem'}}>Admin Profile</span>
                     {!isEditingProfile && (
-                        <button className="action-btn" onClick={() => setIsEditingProfile(true)} style={{backgroundColor: '#4F46E5'}}>Edit Profile</button>
+                        <button className="action-btn" onClick={() => setIsEditingProfile(true)} style={{color: '#4F46E5'}}>Edit Profile</button>
                     )}
                 </div>
                 <div className="list-container" style={{padding: '20px'}}>
@@ -176,9 +176,9 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                        <div className="profile-overview card" style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'flex-start' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                                 {adminProfile.shopLogo ? (
-                                    <img src={adminProfile.shopLogo} alt="Shop Logo" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', border: '2px solid #e5e7eb' }} />
+                                    <img src={adminProfile.shopLogo} alt="Shop Logo" style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: 'cover', boxShadow: 'var(--shadow-out)' }} />
                                 ) : (
-                                    <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>No Logo</div>
+                                    <div style={{ width: '100px', height: '100px', borderRadius: '50%', background: 'var(--bg-color)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af', boxShadow: 'var(--shadow-in)' }}>No Logo</div>
                                 )}
                                 <div>
                                     <h2 style={{ margin: 0, fontSize: '2rem' }}>{adminProfile.shopName || 'N/A'}</h2>
@@ -246,14 +246,14 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                               <button
                                 onClick={handleSaveProfile}
                                 className="action-btn"
-                                style={{backgroundColor: '#10B981', marginTop: '10px'}}
+                                style={{color: '#10B981', marginTop: '10px'}}
                               >
                                 Save Profile
                               </button>
                               <button
                                 onClick={() => setIsEditingProfile(false)}
                                 className="action-btn"
-                                style={{backgroundColor: '#9CA3AF', marginTop: '10px'}}
+                                style={{color: '#9CA3AF', marginTop: '10px'}}
                               >
                                 Cancel
                               </button>
@@ -269,7 +269,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                 <div className="view-header">
                      <div className="total-credit-section">
                         <span className="total-label">Total Supplier Credit</span>
-                        <span className="total-amount" style={{ color: '#F59E0B', WebkitTextFillColor: '#F59E0B' }}>LKR {totalSuppliersCredit.toFixed(2)}</span>
+                        <span className="total-amount" style={{ color: '#F59E0B' }}>LKR {totalSuppliersCredit.toFixed(2)}</span>
                      </div>
                 </div>
                 <div className="list-container">
@@ -284,7 +284,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                         </div>
                         <div className="card-actions">
                             <span className="card-amount" style={{color: '#F59E0B'}}>Due: LKR {item.credit.toFixed(2)}</span>
-                            <button className="action-btn" style={{backgroundColor: '#F59E0B'}} onClick={() => handleSupplierPaymentClick(item)}>Pay</button>
+                            <button className="action-btn" style={{color: '#F59E0B'}} onClick={() => handleSupplierPaymentClick(item)}>Pay</button>
                         </div>
                         </div>
                     ))
@@ -298,11 +298,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                  <div className="investments-summary">
                     <div className="summary-item">
                         <span className="total-label">Total Given</span>
-                        <span className="total-amount" style={{ color: '#10B981', WebkitTextFillColor: '#10B981' }}>LKR {totalInvestmentGiven.toFixed(2)}</span>
-                    </div>
+                        <span className="total-amount" style={{ color: '#10B981' }}>LKR {totalInvestmentGiven.toFixed(2)}</span>
+                     </div>
                     <div className="summary-item">
                         <span className="total-label">Total Taken</span>
-                        <span className="total-amount" style={{ color: '#EF4444', WebkitTextFillColor: '#EF4444' }}>LKR {totalInvestmentTaken.toFixed(2)}</span>
+                        <span className="total-amount" style={{ color: '#EF4444' }}>LKR {totalInvestmentTaken.toFixed(2)}</span>
                     </div>
                  </div>
 
@@ -318,7 +318,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                 </div>
                                 <div className="card-actions">
                                     <span className="card-amount" style={{color: '#10B981'}}>LKR {item.amount.toFixed(2)}</span>
-                                    <button className="action-btn" style={{backgroundColor: '#10B981'}} onClick={() => handleInvestmentPaymentClick(item)}>Pay</button>
+                                    <button className="action-btn" style={{color: '#10B981'}} onClick={() => handleInvestmentPaymentClick(item)}>Pay</button>
                                 </div>
                             </div>
                         ))}
@@ -334,7 +334,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                 </div>
                                 <div className="card-actions">
                                     <span className="card-amount" style={{color: '#EF4444'}}>LKR {item.amount.toFixed(2)}</span>
-                                    <button className="action-btn" style={{backgroundColor: '#EF4444'}} onClick={() => handleInvestmentPaymentClick(item)}>Pay</button>
+                                    <button className="action-btn" style={{color: '#EF4444'}} onClick={() => handleInvestmentPaymentClick(item)}>Pay</button>
                                 </div>
                             </div>
                         ))}

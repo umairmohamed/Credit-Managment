@@ -60,7 +60,7 @@ const AddSupplierScreen: React.FC<AddSupplierScreenProps> = ({ onGoBack }) => {
       </div>
       <div className="form-actions">
           <button onClick={onGoBack} className="cancel-btn">Cancel</button>
-          <button onClick={handleSave} className="save-btn" style={{backgroundColor: '#F59E0B'}}>Save Supplier</button>
+          <button onClick={handleSave} className="save-btn" style={{color: '#F59E0B'}}>Save Supplier</button>
       </div>
     </div>
   );
