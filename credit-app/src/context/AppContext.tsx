@@ -45,7 +45,7 @@ export interface Check {
   contact: string;
   type: 'coming' | 'given';
   date: string;
-  status: 'pending' | 'cleared';
+  status: 'pending' | 'cleared' | 'bounced';
 }
 
 interface AppContextType {
@@ -68,6 +68,7 @@ interface AppContextType {
   processInvestmentPayment: (investmentId: string, amount: string | number) => void;
   addCheck: (data: Omit<Check, 'id' | 'status'>) => void;
   passCheck: (checkId: string) => void;
+  bounceCheck: (checkId: string) => void;
   updateAdminProfile: (profile: AdminProfile) => void;
   totalCredit: number;
 }
@@ -239,6 +240,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }));
   };
 
+  const bounceCheck = (checkId: string) => {
+    setChecks(prev => prev.map(c => {
+      if (c.id === checkId) {
+        return { ...c, status: 'bounced' };
+      }
+      return c;
+    }));
+  };
+
   const updateAdminProfile = (profile: AdminProfile) => {
     setAdminProfile(profile);
   };
@@ -253,7 +263,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       adminProfile,
       addCustomer, addPayment, addSupplierPayment, addDebt,
       addSupplier, addInvestment, processInvestmentPayment,
-      addCheck, passCheck,
+      addCheck, passCheck, bounceCheck,
       updateAdminProfile,
       totalCredit
     }}>
