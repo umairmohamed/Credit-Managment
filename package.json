@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "cd credit-app && pnpm run dev",
-    "mobile": "cd CustomerCreditSystem && npm start"
+    "mobile": "cd CustomerCreditSystem && npm start",
+    "setup": "cd credit-app && pnpm install && cd ../CustomerCreditSystem && npm install"
   },
   "dependencies": {
     "recharts": "^3.6.0"
