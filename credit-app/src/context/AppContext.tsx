@@ -36,11 +36,24 @@ export interface AdminProfile {
   shopLogo?: string;
 }
 
+export interface Check {
+  id: string;
+  number: string;
+  bank: string;
+  amount: number;
+  name: string;
+  contact: string;
+  type: 'coming' | 'given';
+  date: string;
+  status: 'pending' | 'cleared';
+}
+
 interface AppContextType {
   user: User | null;
   customers: Customer[];
   suppliers: Supplier[];
   investments: Investment[];
+  checks: Check[];
   adminProfile: AdminProfile;
   login: (username: string, password: string) => boolean;
   validateCredentials: (username: string, password: string) => {username: string, mobile?: string} | null;
@@ -53,6 +66,8 @@ interface AppContextType {
   addSupplier: (name: string, mobile: string, initialCredit?: string | number) => Supplier;
   addInvestment: (name: string, mobile: string, amount: string | number, type: 'given' | 'taken') => Investment;
   processInvestmentPayment: (investmentId: string, amount: string | number) => void;
+  addCheck: (data: Omit<Check, 'id' | 'status'>) => void;
+  passCheck: (checkId: string) => void;
   updateAdminProfile: (profile: AdminProfile) => void;
   totalCredit: number;
 }
@@ -64,6 +79,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [investments, setInvestments] = useState<Investment[]>([]);
+  const [checks, setChecks] = useState<Check[]>([]);
   const [registeredUsers, setRegisteredUsers] = useState<{username: string, password: string, mobile?: string}[]>(() => {
     const saved = localStorage.getItem('creditApp_users');
     return saved ? JSON.parse(saved) : [{username: 'admin', password: 'admin', mobile: '000000000'}];
@@ -205,6 +221,24 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }));
   };
 
+  const addCheck = (data: Omit<Check, 'id' | 'status'>) => {
+    const newCheck: Check = {
+      ...data,
+      id: Date.now().toString() + Math.random().toString(),
+      status: 'pending',
+    };
+    setChecks(prev => [...prev, newCheck]);
+  };
+
+  const passCheck = (checkId: string) => {
+    setChecks(prev => prev.map(c => {
+      if (c.id === checkId) {
+        return { ...c, status: 'cleared' };
+      }
+      return c;
+    }));
+  };
+
   const updateAdminProfile = (profile: AdminProfile) => {
     setAdminProfile(profile);
   };
@@ -215,9 +249,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     <AppContext.Provider value={{
       user, login, register, validateCredentials, logout,
       customers, suppliers, investments,
+      checks,
       adminProfile,
       addCustomer, addPayment, addSupplierPayment, addDebt,
-      addSupplier, addInvestment, processInvestmentPayment, updateAdminProfile,
+      addSupplier, addInvestment, processInvestmentPayment,
+      addCheck, passCheck,
+      updateAdminProfile,
       totalCredit
     }}>
       {children}
