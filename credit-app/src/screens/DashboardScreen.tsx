@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp, type Customer, type Supplier, type Investment } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 import InvoiceModal from '../components/InvoiceModal';
-import { Users, Truck, TrendingUp, User, LogOut, Plus, Edit, Save, X, CreditCard, CheckCircle } from 'lucide-react';
+import { Users, Truck, TrendingUp, User, LogOut, Plus, Edit, Save, X, CreditCard, CheckCircle, AlertCircle } from 'lucide-react';
 
 export type TabType = 'customers' | 'suppliers' | 'investments' | 'checks' | 'admin';
 
@@ -13,7 +13,7 @@ interface DashboardScreenProps {
 }
 
 const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab, onTabChange }) => {
-  const { customers, suppliers, investments, checks, totalCredit, addPayment, addSupplierPayment, processInvestmentPayment, logout, adminProfile, updateAdminProfile, passCheck } = useApp();
+  const { customers, suppliers, investments, checks, totalCredit, addPayment, addSupplierPayment, processInvestmentPayment, logout, adminProfile, updateAdminProfile, passCheck, bounceCheck } = useApp();
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
@@ -107,6 +107,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
   const totalInvestmentTaken = investments.filter(i => i.type === 'taken').reduce((sum, i) => sum + i.amount, 0);
 
   const pendingChecks = checks.filter(c => c.status === 'pending');
+  const returnedChecks = checks.filter(c => c.status === 'bounced');
   const totalComingChecks = pendingChecks.filter(c => c.type === 'coming').reduce((sum, c) => sum + c.amount, 0);
   const totalGivenChecks = pendingChecks.filter(c => c.type === 'given').reduce((sum, c) => sum + c.amount, 0);
 
@@ -224,6 +225,10 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                         <CheckCircle size={16} />
                                         Pass
                                     </button>
+                                    <button className="action-btn" style={{color: '#F59E0B', display: 'flex', alignItems: 'center', gap: '5px'}} onClick={() => bounceCheck(item.id)}>
+                                        <AlertCircle size={16} />
+                                        Bounce
+                                    </button>
                                 </div>
                             </div>
                         ))}
@@ -248,6 +253,55 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                                         <CheckCircle size={16} />
                                         Pass
                                     </button>
+                                    <button className="action-btn" style={{color: '#F59E0B', display: 'flex', alignItems: 'center', gap: '5px'}} onClick={() => bounceCheck(item.id)}>
+                                        <AlertCircle size={16} />
+                                        Bounce
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="view-header" style={{ marginTop: '40px' }}>
+                    <div className="total-credit-section">
+                        <span className="total-label" style={{ fontSize: '1.2rem', color: '#EF4444' }}>Returned Checks (Bounced)</span>
+                    </div>
+                </div>
+
+                <div className="investments-container">
+                    <div className="investment-section given-section">
+                        <h3 className="section-title">Coming (Returned)</h3>
+                        {returnedChecks.filter(c => c.type === 'coming').length === 0 ? <p className="empty-text">No returned checks</p> :
+                          returnedChecks.filter(c => c.type === 'coming').map(item => (
+                            <div key={item.id} className="card" style={{borderLeft: '4px solid #EF4444'}}>
+                                 <div className="card-info">
+                                    <span className="card-name">{item.name}</span>
+                                    <span className="card-sub">{item.bank} - {item.number}</span>
+                                    <span className="card-sub">{item.contact}</span>
+                                    <span className="card-date">{new Date(item.date).toLocaleDateString()}</span>
+                                </div>
+                                <div className="card-actions">
+                                    <span className="card-amount" style={{color: '#EF4444'}}>LKR {item.amount.toFixed(2)}</span>
+                                    <span style={{ color: '#EF4444', fontWeight: 'bold', fontSize: '0.8rem' }}>BOUNCED</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="investment-section taken-section">
+                        <h3 className="section-title">Given (Returned)</h3>
+                        {returnedChecks.filter(c => c.type === 'given').length === 0 ? <p className="empty-text">No returned checks</p> :
+                          returnedChecks.filter(c => c.type === 'given').map(item => (
+                            <div key={item.id} className="card" style={{borderLeft: '4px solid #EF4444'}}>
+                                 <div className="card-info">
+                                    <span className="card-name">{item.name}</span>
+                                    <span className="card-sub">{item.bank} - {item.number}</span>
+                                    <span className="card-sub">{item.contact}</span>
+                                    <span className="card-date">{new Date(item.date).toLocaleDateString()}</span>
+                                </div>
+                                <div className="card-actions">
+                                    <span className="card-amount" style={{color: '#EF4444'}}>LKR {item.amount.toFixed(2)}</span>
+                                    <span style={{ color: '#EF4444', fontWeight: 'bold', fontSize: '0.8rem' }}>BOUNCED</span>
                                 </div>
                             </div>
                         ))}
