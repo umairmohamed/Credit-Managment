@@ -1,5 +1,6 @@
 import React from 'react';
 import type { AdminProfile } from '../context/AppContext';
+import { Printer, X } from 'lucide-react';
 
 interface InvoiceModalProps {
   visible: boolean;
@@ -54,8 +55,14 @@ const InvoiceModal: React.FC<InvoiceModalProps> = ({ visible, onClose, transacti
         </div>
 
         <div className="modal-actions no-print">
-          <button onClick={onClose} className="cancel-btn">Close</button>
-          <button onClick={handlePrint} className="confirm-btn">Print Invoice</button>
+          <button onClick={onClose} className="cancel-btn" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+             <X size={16} />
+             Close
+          </button>
+          <button onClick={handlePrint} className="confirm-btn" style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+             <Printer size={16} />
+             Print Invoice
+          </button>
         </div>
       </div>
       <style>{`

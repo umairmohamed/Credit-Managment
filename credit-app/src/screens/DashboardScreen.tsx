@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp, type Customer, type Supplier, type Investment } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 import InvoiceModal from '../components/InvoiceModal';
+import { Users, Truck, TrendingUp, User, LogOut, Plus, Edit, Save, X } from 'lucide-react';
 
 export type TabType = 'customers' | 'suppliers' | 'investments' | 'admin';
 
@@ -116,20 +117,27 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
         </div>
         <div className="sidebar-nav">
           <button className={`nav-item ${activeTab === 'customers' ? 'active' : ''}`} onClick={() => onTabChange('customers')}>
-            Customers
+            <Users size={20} />
+            <span>Customers</span>
           </button>
           <button className={`nav-item ${activeTab === 'suppliers' ? 'active' : ''}`} onClick={() => onTabChange('suppliers')}>
-            Suppliers
+            <Truck size={20} />
+            <span>Suppliers</span>
           </button>
           <button className={`nav-item ${activeTab === 'investments' ? 'active' : ''}`} onClick={() => onTabChange('investments')}>
-            Investments
+            <TrendingUp size={20} />
+            <span>Investments</span>
           </button>
           <button className={`nav-item ${activeTab === 'admin' ? 'active' : ''}`} onClick={() => onTabChange('admin')}>
-            Admin Profile
+            <User size={20} />
+            <span>Admin Profile</span>
           </button>
         </div>
         <div className="sidebar-footer">
-           <button onClick={logout} className="logout-btn">Logout</button>
+           <button onClick={logout} className="logout-btn">
+              <LogOut size={20} />
+              <span>Logout</span>
+           </button>
         </div>
       </div>
 
@@ -168,7 +176,10 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                 <div className="view-header">
                     <span className="total-label" style={{fontSize: '1.5rem'}}>Admin Profile</span>
                     {!isEditingProfile && (
-                        <button className="action-btn" onClick={() => setIsEditingProfile(true)} style={{color: '#4F46E5'}}>Edit Profile</button>
+                        <button className="action-btn" onClick={() => setIsEditingProfile(true)} style={{color: '#4F46E5', display: 'flex', alignItems: 'center', gap: '8px'}}>
+                            <Edit size={16} />
+                            Edit Profile
+                        </button>
                     )}
                 </div>
                 <div className="list-container" style={{padding: '20px'}}>
@@ -246,15 +257,17 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                               <button
                                 onClick={handleSaveProfile}
                                 className="action-btn"
-                                style={{color: '#10B981', marginTop: '10px'}}
+                                style={{color: '#10B981', marginTop: '10px', display: 'flex', alignItems: 'center', gap: '8px'}}
                               >
+                                <Save size={16} />
                                 Save Profile
                               </button>
                               <button
                                 onClick={() => setIsEditingProfile(false)}
                                 className="action-btn"
-                                style={{color: '#9CA3AF', marginTop: '10px'}}
+                                style={{color: '#9CA3AF', marginTop: '10px', display: 'flex', alignItems: 'center', gap: '8px'}}
                               >
+                                <X size={16} />
                                 Cancel
                               </button>
                           </div>
@@ -346,7 +359,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
         {activeTab !== 'admin' && (
             <div className="fab-container-floating">
                <button onClick={handleFabClick} className={`fab-btn ${activeTab}`}>
-                   +
+                   <Plus size={32} />
                </button>
             </div>
         )}
