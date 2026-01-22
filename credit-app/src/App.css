@@ -204,6 +204,7 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
 .nav-item:hover {
@@ -235,6 +236,10 @@ body {
   font-weight: 600;
   transition: all 0.2s;
   box-shadow: var(--shadow-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .logout-btn:hover {
