@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useApp, type Customer, type Supplier, type Investment } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 import InvoiceModal from '../components/InvoiceModal';
-import { Users, Truck, TrendingUp, User, LogOut, Plus, Edit, Save, X } from 'lucide-react';
+import { Users, Truck, TrendingUp, User, LogOut, Plus, Edit, Save, X, CreditCard, CheckCircle } from 'lucide-react';
 
-export type TabType = 'customers' | 'suppliers' | 'investments' | 'admin';
+export type TabType = 'customers' | 'suppliers' | 'investments' | 'checks' | 'admin';
 
 interface DashboardScreenProps {
   onNavigate: (screen: string) => void;
@@ -13,7 +13,7 @@ interface DashboardScreenProps {
 }
 
 const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab, onTabChange }) => {
-  const { customers, suppliers, investments, totalCredit, addPayment, addSupplierPayment, processInvestmentPayment, logout, adminProfile, updateAdminProfile } = useApp();
+  const { customers, suppliers, investments, checks, totalCredit, addPayment, addSupplierPayment, processInvestmentPayment, logout, adminProfile, updateAdminProfile, passCheck } = useApp();
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
@@ -82,6 +82,7 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
       if (activeTab === 'customers') onNavigate('AddCustomer');
       else if (activeTab === 'suppliers') onNavigate('AddSupplier');
       else if (activeTab === 'investments') onNavigate('AddInvestment');
+      else if (activeTab === 'checks') onNavigate('AddCheck');
   };
 
   const handleSaveProfile = () => {
@@ -105,6 +106,20 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
   const totalInvestmentGiven = investments.filter(i => i.type === 'given').reduce((sum, i) => sum + i.amount, 0);
   const totalInvestmentTaken = investments.filter(i => i.type === 'taken').reduce((sum, i) => sum + i.amount, 0);
 
+  const pendingChecks = checks.filter(c => c.status === 'pending');
+  const totalComingChecks = pendingChecks.filter(c => c.type === 'coming').reduce((sum, c) => sum + c.amount, 0);
+  const totalGivenChecks = pendingChecks.filter(c => c.type === 'given').reduce((sum, c) => sum + c.amount, 0);
+
+  const isDueSoon = (dateStr: string) => {
+    const due = new Date(dateStr);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    due.setHours(0,0,0,0);
+    const diffTime = due.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays >= 0 && diffDays <= 2;
+  };
+
   return (
     <div className="app-layout">
       <div className="sidebar">
@@ -127,6 +142,10 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
           <button className={`nav-item ${activeTab === 'investments' ? 'active' : ''}`} onClick={() => onTabChange('investments')}>
             <TrendingUp size={20} />
             <span>Investments</span>
+          </button>
+          <button className={`nav-item ${activeTab === 'checks' ? 'active' : ''}`} onClick={() => onTabChange('checks')}>
+            <CreditCard size={20} />
+            <span>Checks</span>
           </button>
           <button className={`nav-item ${activeTab === 'admin' ? 'active' : ''}`} onClick={() => onTabChange('admin')}>
             <User size={20} />
@@ -167,6 +186,72 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
                         </div>
                     ))
                     )}
+                </div>
+            </div>
+        )}
+
+        {activeTab === 'checks' && (
+            <div className="view-container">
+                 <div className="investments-summary">
+                    <div className="summary-item">
+                        <span className="total-label">Coming Amount</span>
+                        <span className="total-amount" style={{ color: '#10B981' }}>LKR {totalComingChecks.toFixed(2)}</span>
+                     </div>
+                    <div className="summary-item">
+                        <span className="total-label">Given Amount</span>
+                        <span className="total-amount" style={{ color: '#EF4444' }}>LKR {totalGivenChecks.toFixed(2)}</span>
+                    </div>
+                 </div>
+
+                <div className="investments-container">
+                    <div className="investment-section given-section">
+                        <h3 className="section-title">Coming Checks (Received)</h3>
+                        {pendingChecks.filter(c => c.type === 'coming').length === 0 ? <p className="empty-text">No pending checks</p> :
+                          pendingChecks.filter(c => c.type === 'coming').map(item => (
+                            <div key={item.id} className="card" style={{borderLeft: isDueSoon(item.date) ? '4px solid #F59E0B' : 'none'}}>
+                                 <div className="card-info">
+                                    <span className="card-name">{item.name}</span>
+                                    <span className="card-sub">{item.bank} - {item.number}</span>
+                                    <span className="card-sub">{item.contact}</span>
+                                    <span className="card-date" style={{color: isDueSoon(item.date) ? '#F59E0B' : 'inherit', fontWeight: isDueSoon(item.date) ? 'bold' : 'normal'}}>
+                                        {new Date(item.date).toLocaleDateString()}
+                                        {isDueSoon(item.date) && <span style={{marginLeft: '5px', fontSize: '0.8rem'}}>(Due Soon)</span>}
+                                    </span>
+                                </div>
+                                <div className="card-actions">
+                                    <span className="card-amount" style={{color: '#10B981'}}>LKR {item.amount.toFixed(2)}</span>
+                                    <button className="action-btn" style={{color: '#10B981', display: 'flex', alignItems: 'center', gap: '5px'}} onClick={() => passCheck(item.id)}>
+                                        <CheckCircle size={16} />
+                                        Pass
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="investment-section taken-section">
+                        <h3 className="section-title">Given Checks (Issued)</h3>
+                        {pendingChecks.filter(c => c.type === 'given').length === 0 ? <p className="empty-text">No pending checks</p> :
+                          pendingChecks.filter(c => c.type === 'given').map(item => (
+                            <div key={item.id} className="card" style={{borderLeft: isDueSoon(item.date) ? '4px solid #F59E0B' : 'none'}}>
+                                 <div className="card-info">
+                                    <span className="card-name">{item.name}</span>
+                                    <span className="card-sub">{item.bank} - {item.number}</span>
+                                    <span className="card-sub">{item.contact}</span>
+                                    <span className="card-date" style={{color: isDueSoon(item.date) ? '#F59E0B' : 'inherit', fontWeight: isDueSoon(item.date) ? 'bold' : 'normal'}}>
+                                        {new Date(item.date).toLocaleDateString()}
+                                        {isDueSoon(item.date) && <span style={{marginLeft: '5px', fontSize: '0.8rem'}}>(Due Soon)</span>}
+                                    </span>
+                                </div>
+                                <div className="card-actions">
+                                    <span className="card-amount" style={{color: '#EF4444'}}>LKR {item.amount.toFixed(2)}</span>
+                                    <button className="action-btn" style={{color: '#EF4444', display: 'flex', alignItems: 'center', gap: '5px'}} onClick={() => passCheck(item.id)}>
+                                        <CheckCircle size={16} />
+                                        Pass
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         )}

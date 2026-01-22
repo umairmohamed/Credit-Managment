@@ -6,6 +6,7 @@ import DashboardScreen, { type TabType } from './screens/DashboardScreen'
 import AddCustomerScreen from './screens/AddCustomerScreen'
 import AddSupplierScreen from './screens/AddSupplierScreen'
 import AddInvestmentScreen from './screens/AddInvestmentScreen'
+import AddCheckScreen from './screens/AddCheckScreen'
 
 const MainApp: React.FC = () => {
   const { user } = useApp();
@@ -26,6 +27,10 @@ const MainApp: React.FC = () => {
 
   if (currentScreen === 'AddInvestment') {
     return <AddInvestmentScreen onGoBack={() => setCurrentScreen('Dashboard')} />;
+  }
+
+  if (currentScreen === 'AddCheck') {
+    return <AddCheckScreen onGoBack={() => setCurrentScreen('Dashboard')} />;
   }
 
   return (
