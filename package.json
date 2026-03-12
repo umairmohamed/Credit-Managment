@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "cd frontends/credit-app && pnpm run dev",
     "mobile": "cd frontends/CustomerCreditSystem && npm start",
-    "setup": "npm install && cd frontends/credit-app && pnpm install && cd ../CustomerCreditSystem && npm install"
+    "setup": "npm install && cd frontends/credit-app && pnpm install && cd ../CustomerCreditSystem && npm install",
+    "postinstall": "cd frontends/credit-app && pnpm install"
   },
   "dependencies": {
     "recharts": "^3.6.0"
