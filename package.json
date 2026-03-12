@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "cd frontends/credit-app && pnpm run dev",
-    "mobile": "cd frontends/CustomerCreditSystem && npm start"
+    "mobile": "cd frontends/CustomerCreditSystem && npm start",
+    "setup": "npm install && cd frontends/credit-app && pnpm install && cd ../CustomerCreditSystem && npm install"
   },
   "dependencies": {
     "recharts": "^3.6.0"
