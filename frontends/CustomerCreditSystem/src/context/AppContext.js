@@ -69,10 +69,15 @@ export const AppProvider = ({ children }) => {
 
   const totalCredit = customers.reduce((sum, c) => sum + c.credit, 0);
 
+  const clearAllData = () => {
+    setCustomers([]);
+  };
+
   return (
     <AppContext.Provider value={{
       user, login, register, logout,
       customers, addCustomer, addPayment, addDebt,
+      clearAllData,
       totalCredit
     }}>
       {children}

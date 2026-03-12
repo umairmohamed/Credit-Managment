@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp, type Customer, type Supplier, type Investment } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 import InvoiceModal from '../components/InvoiceModal';
-import { Users, Truck, TrendingUp, User, LogOut, Plus, Edit, Save, X, CreditCard, CheckCircle } from 'lucide-react';
+import { Users, Truck, TrendingUp, User, LogOut, Plus, Edit, Save, X, CreditCard, CheckCircle, Trash2 } from 'lucide-react';
 
 export type TabType = 'customers' | 'suppliers' | 'investments' | 'checks' | 'admin';
 
@@ -13,7 +13,7 @@ interface DashboardScreenProps {
 }
 
 const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab, onTabChange }) => {
-  const { customers, suppliers, investments, checks, totalCredit, addPayment, addSupplierPayment, processInvestmentPayment, logout, adminProfile, updateAdminProfile, passCheck } = useApp();
+  const { customers, suppliers, investments, checks, totalCredit, addPayment, addSupplierPayment, processInvestmentPayment, logout, adminProfile, updateAdminProfile, passCheck, clearAllData } = useApp();
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
@@ -91,6 +91,13 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
     window.alert('Profile Saved Successfully!');
   };
 
+  const handleClearAll = () => {
+    if (window.confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+        clearAllData();
+        window.alert('All data cleared successfully.');
+    }
+  };
+
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -152,7 +159,11 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate, activeTab
             <span>Admin Profile</span>
           </button>
         </div>
-        <div className="sidebar-footer">
+        <div className="sidebar-footer" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+           <button onClick={handleClearAll} className="logout-btn" style={{ color: '#EF4444', border: '1px solid #EF4444' }}>
+              <Trash2 size={20} />
+              <span>Clear All Data</span>
+           </button>
            <button onClick={logout} className="logout-btn">
               <LogOut size={20} />
               <span>Logout</span>
