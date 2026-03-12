@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Button, Alert } from 'react-native';
 import { useApp } from '../context/AppContext';
 import PaymentModal from '../components/PaymentModal';
 
 const DashboardScreen = ({ navigation }) => {
-  const { customers, totalCredit, addPayment, logout } = useApp();
+  const { customers, totalCredit, addPayment, logout, clearAllData } = useApp();
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -17,6 +17,20 @@ const DashboardScreen = ({ navigation }) => {
     if (selectedCustomer) {
       addPayment(selectedCustomer.id, amount);
     }
+  };
+
+  const handleClearAll = () => {
+    Alert.alert(
+      'Clear All Data',
+      'Are you sure you want to clear all data? This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Clear', style: 'destructive', onPress: () => {
+          clearAllData();
+          Alert.alert('Success', 'All data cleared successfully.');
+        }},
+      ]
+    );
   };
 
   const renderItem = ({ item }) => (
@@ -39,9 +53,14 @@ const DashboardScreen = ({ navigation }) => {
       <View style={styles.header}>
         <Text style={styles.totalLabel}>Total Credit</Text>
         <Text style={styles.totalAmount}>LKR {totalCredit.toFixed(2)}</Text>
-        <TouchableOpacity onPress={logout} style={styles.logoutBtn}>
-            <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+        <View style={styles.headerActions}>
+            <TouchableOpacity onPress={handleClearAll} style={[styles.logoutBtn, { marginRight: 10, borderColor: '#EF4444', borderWidth: 1 }]}>
+                <Text style={styles.logoutText}>Clear All</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={logout} style={styles.logoutBtn}>
+                <Text style={styles.logoutText}>Logout</Text>
+            </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
@@ -98,6 +117,9 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: '800',
     marginBottom: 12,
+  },
+  headerActions: {
+    flexDirection: 'row',
   },
   logoutBtn: {
     paddingVertical: 8,

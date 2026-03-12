@@ -2,8 +2,8 @@
   "name": "credit-management-root",
   "private": true,
   "scripts": {
-    "dev": "cd credit-app && pnpm run dev",
-    "mobile": "cd CustomerCreditSystem && npm start"
+    "dev": "cd frontends/credit-app && pnpm run dev",
+    "mobile": "cd frontends/CustomerCreditSystem && npm start"
   },
   "dependencies": {
     "recharts": "^3.6.0"
