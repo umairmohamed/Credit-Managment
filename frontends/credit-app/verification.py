@@ -71,7 +71,7 @@ def run(playwright):
         page.wait_for_selector("text=Due Soon")
 
         # Check Total
-        expect(page.locator("text=LKR 50000.00")).to_be_visible()
+        expect(page.locator("text=LKR 50000.00").first).to_be_visible()
 
         # Screenshot
         print("Taking screenshot...")
